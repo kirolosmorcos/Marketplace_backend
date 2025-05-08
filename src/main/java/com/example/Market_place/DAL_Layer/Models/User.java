@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,8 +63,13 @@ public class User {
         this.id = id;
     }
 
+    public RoleName getRole() {
+        return role;
+    }
 
-
+    public void setRole(RoleName role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;

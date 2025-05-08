@@ -3,7 +3,10 @@ package com.example.Market_place.API_Layer.Controllers;
 import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.BLL_Layer.Services.Implementations.UserService;
+import com.example.Market_place.DAL_Layer.enums.RoleName;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,25 +20,25 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDTO userDto) {
-        // logic to register user
-        return ResponseEntity.ok("User registered");
-    }
-
-
-
 //    @PostMapping("/register")
-//    public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO) {
-//        User user = new User();
-//        user.setPassword(userDTO.getPassword());
-//        user.setUsername(userDTO.getEmail());
-//        user.setRole(RoleName.ROLE_USER);
-//
-//        User savedUser = userService.save(user);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-//      //  return ResponseEntity.ok("Registered!");
+//    public ResponseEntity<String> register(@RequestBody UserDTO userDto) {
+//        // logic to register user
+//        return ResponseEntity.ok("User registered");
 //    }
+
+
+
+    @PostMapping("/register")
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO) {
+        User user = new User();
+        user.setPassword(userDTO.getPassword());
+        user.setUsername(userDTO.getEmail());
+        user.setRole(RoleName.ROLE_USER);
+
+        User savedUser = userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+      //  return ResponseEntity.ok("Registered!");
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
