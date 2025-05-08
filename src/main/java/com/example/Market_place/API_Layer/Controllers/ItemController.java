@@ -1,5 +1,6 @@
 package com.example.Market_place.API_Layer.Controllers;
 
+import com.example.Market_place.BLL_Layer.Dto.ItemDTO;
 import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.BLL_Layer.Services.Implementations.ItemService;
 import com.example.Market_place.DAL_Layer.Models.Item;
@@ -9,10 +10,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/item")
@@ -22,11 +24,32 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping("/add")
-    public ResponseEntity<Item> createItem(@RequestBody @Valid Item item) {
+    public ResponseEntity<ItemDTO> createItem(@RequestBody @Valid ItemDTO itemDTO) {
+        Item item = itemService.mapToItem(itemDTO);
         Item savedItem = itemService.save(item);
+        ItemDTO itemDTO1 = itemService.mapToItemDTO(savedItem);
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemDTO1);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
-        //  return ResponseEntity.ok("Registered!");
     }
 
+    @GetMapping
+    public ResponseEntity<List<ItemDTO>> getAllItems() {
+        List<Item> items = itemService.findAllWithSpecifications();
+        List<ItemDTO>itemsDTO=new ArrayList<>();
+        for (Item item : items) {
+            itemsDTO.add(itemService.mapToItemDTO(item));
+        }
+        return ResponseEntity.ok(itemsDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {
+        Optional<Item> itemOptional = itemService.findById(id);
+        Optional<ItemDTO> itemDTOOptional = itemOptional.map(itemService::mapToItemDTO);
+        return itemDTOOptional
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
+
+

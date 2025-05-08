@@ -1,5 +1,6 @@
 package com.example.Market_place.DAL_Layer.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,10 +20,15 @@ public class Item {
     private String description;
     private double rating;
 
-    @ElementCollection
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Specification> specifications;
 
     private String status;
+
+//    @ManyToOne
+//    @JoinColumn(name = "seller_id")
+//    private User seller;
 
     public LocalDate getDateCreated() {
         return dateCreated;

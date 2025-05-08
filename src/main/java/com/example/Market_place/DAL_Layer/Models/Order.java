@@ -19,5 +19,8 @@ public class Order {
     private LocalDate orderDate;
     private LocalDate receivedDate;
 
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
 }
