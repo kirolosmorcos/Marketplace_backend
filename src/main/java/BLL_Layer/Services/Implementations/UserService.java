@@ -1,0 +1,35 @@
+package BLL_Layer.Services.Implementations;
+
+import DAL_Layer.Models.User;
+import DAL_Layer.Repositories.Interfaces.UserRepository;
+import BLL_Layer.Services.Interfaces.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Optional;
+
+public class UserService implements IUserService {
+    @Autowired
+    private UserRepository userRepo;
+
+    @Override
+    public User save(User user) {
+        return userRepo.save(user);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepo.findById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepo.deleteById(id);
+    }
+
+}
