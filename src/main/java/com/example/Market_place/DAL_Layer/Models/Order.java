@@ -1,4 +1,4 @@
-package DAL_Layer.Models;
+package com.example.Market_place.DAL_Layer.Models;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
-package DAL_Layer.Repositories.Interfaces;
+package com.example.Market_place.DAL_Layer.Repositories.Interfaces;
 
-import DAL_Layer.Models.User;
+import com.example.Market_place.DAL_Layer.Models.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

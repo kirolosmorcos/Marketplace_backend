@@ -1,6 +1,6 @@
-package DAL_Layer.Models;
+package com.example.Market_place.DAL_Layer.Models;
 
-import DAL_Layer.enums.RoleName;
+import com.example.Market_place.DAL_Layer.enums.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Vector;
 
 @Entity
-@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class User {
     )
     private String phone;
 
-    private BufferedImage sellerAvatar;
+    private String sellerAvatar;
 
 
     private double rating;
@@ -89,11 +88,11 @@ public class User {
         this.phone = phone;
     }
 
-    public BufferedImage getSellerAvatar() {
+    public String getSellerAvatar() {
         return sellerAvatar;
     }
 
-    public void setSellerAvatar(BufferedImage sellerAvatar) {
+    public void setSellerAvatar(String sellerAvatar) {
         this.sellerAvatar = sellerAvatar;
     }
 

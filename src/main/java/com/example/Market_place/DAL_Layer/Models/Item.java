@@ -1,23 +1,25 @@
-package DAL_Layer.Models;
+package com.example.Market_place.DAL_Layer.Models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private double price;
-    private BufferedImage image;
+    private String image;
     private int quantity;
 
 
     private String description;
     private double rating;
 
+    @ElementCollection
     private List<Specification> specifications;
 
     private String status;
@@ -25,12 +27,3 @@ public class Item {
     private LocalDate dateCreated;
 }
 
-class Specification {
-    private String label;
-    private String value;
-
-    public Specification(String label, String value) {
-        this.label = label;
-        this.value = value;
-    }
-}

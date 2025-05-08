@@ -1,13 +1,14 @@
-package BLL_Layer.Services.Implementations;
+package com.example.Market_place.BLL_Layer.Services.Implementations;
 
-import DAL_Layer.Models.User;
-import DAL_Layer.Repositories.Interfaces.UserRepository;
-import BLL_Layer.Services.Interfaces.IUserService;
+import com.example.Market_place.DAL_Layer.Models.User;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
+import com.example.Market_place.BLL_Layer.Services.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepo;

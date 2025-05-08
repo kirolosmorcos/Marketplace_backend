@@ -1,4 +1,4 @@
-package BLL_Layer.Dto;
+package com.example.Market_place.BLL_Layer.Dto;
 
 import lombok.Getter;
 import lombok.Setter;
