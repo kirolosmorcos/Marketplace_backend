@@ -33,4 +33,8 @@ public class UserService implements IUserService {
         userRepo.deleteById(id);
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }
