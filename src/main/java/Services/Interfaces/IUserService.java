@@ -1,4 +1,6 @@
 package Services.Interfaces;
 
-public class IUserService {
+import Models.User;
+
+public interface IUserService extends IBaseService<User,Long> {
 }
