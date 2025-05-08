@@ -1,6 +1,6 @@
 package Services.Interfaces;
 
-import Models.User;
+import com.example.Market.Place.Models.User;
 
 public interface IUserService extends IBaseService<User,Long> {
 }

@@ -1,4 +1,5 @@
-package Models;
+package com.example.Market.Place.Models;
+
 
 import jakarta.persistence.*;
 

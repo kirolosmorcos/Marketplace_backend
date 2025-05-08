@@ -1,6 +1,6 @@
 package Repositories.Interfaces;
 
-import Models.User;
+import com.example.Market.Place.Models.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

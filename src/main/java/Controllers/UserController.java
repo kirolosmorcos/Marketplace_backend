@@ -1,7 +1,7 @@
 package Controllers;
 
 import Dto.UserDTO;
-import Models.User;
+import com.example.Market.Place.Models.User;
 import Services.Implementations.UserService;
 import enums.RoleName;
 import jakarta.validation.Valid;

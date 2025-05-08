@@ -1,6 +1,6 @@
 package Services.Implementations;
 
-import Models.User;
+import com.example.Market.Place.Models.User;
 import Repositories.Interfaces.UserRepository;
 import Services.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
