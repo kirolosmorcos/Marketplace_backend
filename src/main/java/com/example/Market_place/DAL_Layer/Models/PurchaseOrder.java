@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 @Entity
 
-public class Order {
+public class PurchaseOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
@@ -19,5 +19,8 @@ public class Order {
     private LocalDate orderDate;
     private LocalDate receivedDate;
 
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
 }

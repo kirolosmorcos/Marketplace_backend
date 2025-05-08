@@ -30,7 +30,7 @@ public class UserRepository {
 
 
     //@GetMapping
-    public List<User> getAllUser1() {
+    public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         allUsers.addAll(UserRepo1.findAll());
         allUsers.addAll(UserRepo2.findAll());

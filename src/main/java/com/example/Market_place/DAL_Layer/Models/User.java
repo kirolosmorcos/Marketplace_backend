@@ -49,7 +49,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "buyer_id") // Foreign key in Item table
-        private List<Order> orders;
+        private List<PurchaseOrder> orders;
 
 
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
@@ -127,11 +127,11 @@ public class User {
         this.cardInfo = cardInfo;
     }
 
-    public List<Order> getOrders() {
+    public List<PurchaseOrder> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<PurchaseOrder> orders) {
         this.orders = orders;
     }
 

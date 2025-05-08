@@ -6,6 +6,7 @@ import com.example.Market_place.BLL_Layer.Services.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -15,22 +16,26 @@ public class UserService implements IUserService {
 
     @Override
     public User save(User user) {
-        return userRepo.save(user);
+        //return userRepo.addUser(user);
+        return new User();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepo.findById(id);
+        //return userRepo.getUser(id);
+        return null;
     }
 
     @Override
     public List<User> findAll() {
-        return userRepo.findAll();
+        //return userRepo.getAllUsers();
+        List UserList = new ArrayList();
+        return UserList;
     }
 
     @Override
     public void deleteById(Long id) {
-        userRepo.deleteById(id);
+        //userRepo.deleteUser(id);
     }
 
 }
