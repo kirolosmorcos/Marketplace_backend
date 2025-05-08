@@ -6,7 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-public class Item {
+
+public  class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
