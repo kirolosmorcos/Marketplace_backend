@@ -43,6 +43,7 @@ public class User {
     @JoinColumn(name = "seller_id") // Foreign key in Item table
     private List<Item> userListings;
 
+    @ElementCollection
     private Vector<Integer> cardInfo;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
