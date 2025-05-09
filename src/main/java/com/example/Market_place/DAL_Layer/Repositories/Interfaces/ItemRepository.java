@@ -1,49 +1,76 @@
 package com.example.Market_place.DAL_Layer.Repositories.Interfaces;
 
 import com.example.Market_place.DAL_Layer.DB1.repository.ItemRepositoryDB1;
+import com.example.Market_place.DAL_Layer.DB2.repository.ItemRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.Item;
+import com.example.Market_place.DAL_Layer.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ItemRepository {
+public class ItemRepository{
     @Autowired
     private ItemRepositoryDB1 ItemRepo1;
 
+    @Autowired
+    private ItemRepositoryDB2 ItemRepo2;
+
     public Item save(Item item) {
-        return ItemRepo1.save(item);
+        if (item.getSeller() == null || item.getSeller().getId() == null) {
+            throw new IllegalArgumentException("Seller or seller ID must not be null");
+        }
+
+        if (item.getSeller().getId() % 2 == 0) {
+            return ItemRepo1.save(item);  // Even ID → DB1
+        } else {
+            return ItemRepo2.save(item);  // Odd ID → DB2
+        }
     }
 
 
     //@GetMapping
     public List<Item> findAll() {
-        return ItemRepo1.findAll();
-
+        List<Item> allItems = new ArrayList<>();
+        allItems.addAll(ItemRepo1.findAll());
+        allItems.addAll(ItemRepo2.findAll());
+       return allItems;
     }
+
 
 
     //@GetMapping("/{id}")
     public Optional<Item> findById(Long id) {
-        return ItemRepo1.findById(id);
+        Optional<Item> item = ItemRepo1.findById(id);
+        if (item.isPresent()) {
+            return item;
+        }
+        Optional<Item> item2 = ItemRepo2.findById(id);
+        return item2;
     }
 
     //@DeleteMapping("/{id}")
-    public void deleteById(Long id) {
-        ItemRepo1.deleteById(id);
+    public void deleteById( Long id) {
+        Item one = ItemRepo1.findById(id).orElse(null);
+        Item two = ItemRepo2.findById(id).orElse(null);
+        if (one != null ) {
+            ItemRepo1.deleteById(id);
+        }
+        if (two != null ) {
+            ItemRepo2.deleteById(id);
+        }
 
     }
-
     public List<Item> findAllWithSpecifications() {
-        return ItemRepo1.findAllWithSpecifications();
-    }
-
-    public List<Item> findBySellerId(Long sellerId) {
-        return ItemRepo1.findBySellerId(sellerId);
+        List<Item> items = new ArrayList<>();
+        items.addAll(ItemRepo1.findAllWithSpecifications());
+        items.addAll(ItemRepo2.findAllWithSpecifications());
+        return items;
     }
 
 }
