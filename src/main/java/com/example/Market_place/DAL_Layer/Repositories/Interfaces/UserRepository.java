@@ -24,7 +24,7 @@ public class UserRepository {
 
     //@PostMapping
     public User save( User user) {
-        if (user.getId() % 2 == 0) {
+        if (user.getRating() > 3) {
             return UserRepo1.save(user);
         } else {
             return UserRepo2.save(user);
