@@ -9,7 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ItemRepositoryDB2 extends IBaseRepo<Item,Long> {
-    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.specifications")
-    List<Item> findAllWithSpecifications();
+//    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.specifications")
+//    List<Item> findAllWithSpecifications();
     List<Item> findBySellerId(Long sellerId);
+    List<Item> findByOrderId(Long categoryId);
 }

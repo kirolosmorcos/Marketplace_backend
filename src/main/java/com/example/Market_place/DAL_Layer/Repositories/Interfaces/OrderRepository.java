@@ -1,5 +1,6 @@
 package com.example.Market_place.DAL_Layer.Repositories.Interfaces;
 
+import com.example.Market_place.DAL_Layer.DB1.repository.ItemRepositoryDB1;
 import com.example.Market_place.DAL_Layer.DB1.repository.OrderRepositoryDB1;
 import com.example.Market_place.DAL_Layer.DB2.repository.OrderRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.Item;
@@ -26,7 +27,10 @@ public class OrderRepository{
     @Autowired
     private UserRepository UserRepo;
 
-   public Order save(Order order) {
+    @Autowired
+    private ItemRepository itemRepo;
+
+    public Order save(Order order) {
 
        if(order.getBuyerId()%2 == 0){
            return  OrderRepo1.save(order);
@@ -76,7 +80,7 @@ public class OrderRepository{
         }
     }
 
-   public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {
+   public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {//need implementation with join
        List<Order> allOrders = new ArrayList<>();
 
        User user = UserRepo.findById(userId).orElse(null);
@@ -84,6 +88,12 @@ public class OrderRepository{
        List<Order> filteredOrders = allOrders.stream()
                .filter(order -> status.equals(order.getStatus()))
                .collect(Collectors.toList());
+       for(Order order:filteredOrders)
+       {
+           List<Item> items=new ArrayList<>();
+           items.addAll(itemRepo.findByOrderId(order.getOrderId()));
+           order.setItems(items);
+       }
 
        return filteredOrders;
    }

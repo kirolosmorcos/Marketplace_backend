@@ -44,7 +44,7 @@ public class Item {
 
     //    @ManyToOne
 //    @JoinColumn(name = "order_id")
-    private int orderId;
+    private Long orderId;
     @Transient
     private Order order;
 
@@ -54,11 +54,11 @@ public class Item {
 
     private String status;
 
-    public int getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

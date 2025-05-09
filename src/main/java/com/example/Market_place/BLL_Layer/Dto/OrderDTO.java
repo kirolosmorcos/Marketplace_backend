@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-    private int  id;
+    private Long  id;
     private String date;
     private List<OrderItemDTO> items;
 
@@ -18,11 +18,11 @@ public class OrderDTO {
         this.date = date;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

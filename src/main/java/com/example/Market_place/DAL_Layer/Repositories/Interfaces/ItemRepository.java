@@ -3,6 +3,7 @@ package com.example.Market_place.DAL_Layer.Repositories.Interfaces;
 import com.example.Market_place.DAL_Layer.DB1.repository.ItemRepositoryDB1;
 import com.example.Market_place.DAL_Layer.DB2.repository.ItemRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.Item;
+import com.example.Market_place.DAL_Layer.Models.Specification;
 import com.example.Market_place.DAL_Layer.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,9 @@ public class ItemRepository {
 
     @Autowired
     private ItemRepositoryDB2 ItemRepo2;
+
+    @Autowired
+    private SpecificationRepository SpecRepo;
 
     public Item save(Item item) {
         if (item.getSellerId() % 2 == 0) {
@@ -62,10 +66,17 @@ public class ItemRepository {
 
     }
 
-    public List<Item> findAllWithSpecifications() {
+    public List<Item> findAllWithSpecifications() {//need implementation with join
         List<Item> items = new ArrayList<>();
-        items.addAll(ItemRepo1.findAllWithSpecifications());
-        items.addAll(ItemRepo2.findAllWithSpecifications());
+
+        items.addAll(ItemRepo1.findAll());
+        items.addAll(ItemRepo2.findAll());
+        for(Item item:items)
+        {
+            Long itemId=item.getId();
+            List<Specification> specs=SpecRepo.findAllByItemId(itemId);
+            item.setSpecifications(specs);
+        }
         return items;
     }
    public void UpdateItem(Item item){//need implementation
@@ -83,6 +94,12 @@ public class ItemRepository {
         List<Item> items = new ArrayList<>();
         items.addAll(ItemRepo1.findBySellerId(userId));
         items.addAll(ItemRepo2.findBySellerId(userId));
+        return items;
+    }
+    public List<Item>findByOrderId(Long orderId){
+        List<Item> items=new ArrayList<>();
+        items.addAll(ItemRepo1.findByOrderId(orderId));
+        items.addAll(ItemRepo2.findByOrderId(orderId));
         return items;
     }
 }

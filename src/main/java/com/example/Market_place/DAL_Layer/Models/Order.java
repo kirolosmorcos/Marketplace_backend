@@ -80,7 +80,7 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getPaymentId() {
+    public Long getPaymentId() {
         return paymentId;
     }
 
