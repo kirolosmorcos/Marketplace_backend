@@ -16,7 +16,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
     //@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
-    private List<Integer> itemId;
+
+    @Transient
+    private List<Item> items;
+
     private String paymentMethod;
     private String status;
 
@@ -26,26 +29,38 @@ public class Order {
 
     //    @ManyToOne
 //    @JoinColumn(name = "buyer_id")
-    private int buyerId;
+    private Long buyerId;
 
-    //    @ManyToOne
-//    @JoinColumn(name = "payment_payment_id")
-    private int paymentId;
+    @Transient
+     private User buyer;
 
-    public int getBuyer() {
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
+    public Long getBuyerId() {
         return buyerId;
     }
 
-    public void setBuyer(int buyer) {
+    public void setBuyerId(Long buyerId) {
         this.buyerId = buyerId;
     }
 
-    public List<Integer> getItems() {
-        return itemId;
+    //    @ManyToOne
+//    @JoinColumn(name = "payment_payment_id")
+
+    private int paymentId;//foreign
+
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setItems(List<Integer> itemId) {
-        this.itemId = itemId;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     public LocalDate getOrderDate() {

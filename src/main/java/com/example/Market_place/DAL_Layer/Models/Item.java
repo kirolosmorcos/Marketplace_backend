@@ -36,19 +36,33 @@ public class Item {
     @Column(nullable = false)
     private LocalDate dateCreated;
 
+    //    @ManyToOne
+//    @JoinColumn(name = "seller_id")
+    private int sellerId;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    //    @ManyToOne
+//    @JoinColumn(name = "order_id")
+    private int orderId;
+
+   // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+   @Transient
     private List<Specification> specifications;
 
     private String status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "seller_id")
-    private int sellerId;
+    public int getOrderId() {
+        return orderId;
+    }
 
-//    @ManyToOne
-//    @JoinColumn(name = "order_id")
-    private int orderId;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    private int views;
 
     @PrePersist
     public void prePersist() {
@@ -146,7 +160,7 @@ public class Item {
     }
 
 
-    private int views;
+
    // private LocalDate dateCreated;
 
     public int getSellerId() {

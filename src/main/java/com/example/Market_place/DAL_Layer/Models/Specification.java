@@ -15,7 +15,18 @@ public class Specification {
     private Long id;
     private String label;
     private String specValue;
+
+    @Transient
+    private Item item;
     private Long itemId;
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
     public Long getId() {
         return id;

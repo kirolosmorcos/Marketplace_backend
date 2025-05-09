@@ -37,14 +37,16 @@ public class User {
 
     //@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     // Foreign key in Item table
-    private List<Integer> userListings;
+    @Transient
+    private List<Item> userListings;
 
 //    @ElementCollection
 //    private Vector<Integer> cardInfo;
 
 
     //@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
-    private List<Integer> ordersId;
+    @Transient
+    private List<Order> orders;
 
 
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
@@ -106,29 +108,29 @@ public class User {
         this.rating = rating;
     }
 
-    public List<Integer> getUserListings() {
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Item> getUserListings() {
         return userListings;
     }
 
-    public void setUserListings(List<Integer> userListings) {
+    public void setUserListings(List<Item> userListings) {
         this.userListings = userListings;
     }
 
-//    public Vector<Integer> getCardInfo() {
+    //    public Vector<Integer> getCardInfo() {
 //        return cardInfo;
 //    }
 //
 //    public void setCardInfo(Vector<Integer> cardInfo) {
 //        this.cardInfo = cardInfo;
 //    }
-
-    public List<Integer> getOrders() {
-        return ordersId;
-    }
-
-    public void setOrders(List<Integer> orders) {
-        this.ordersId = ordersId;
-    }
 
 
 }
