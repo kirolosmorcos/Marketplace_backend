@@ -15,6 +15,7 @@ public class Specification {
     private Long id;
     private String label;
     private String specValue;
+    private Long itemId;
 
     public Long getId() {
         return id;
@@ -28,7 +29,7 @@ public class Specification {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
@@ -51,5 +52,4 @@ public class Specification {
 //    @ManyToOne
 //    @JoinColumn(name = "item_id")
 
-    private int itemId;
 }

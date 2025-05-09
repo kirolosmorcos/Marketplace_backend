@@ -62,17 +62,21 @@ public class OrderRepository{
         }
     }
    public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {
-       List<Order> orders = new ArrayList<>();
-       orders.addAll(OrderRepo1.findByUserIdAndStatusWithItems(userId, status));
-       orders.addAll(OrderRepo2.findByUserIdAndStatusWithItems(userId, status));
-
-       return orders;
+//       List<Order> orders = new ArrayList<>();
+//       orders.addAll(OrderRepo1.findByUserIdAndStatusWithItems(userId, status));
+//       orders.addAll(OrderRepo2.findByUserIdAndStatusWithItems(userId, status));
+//
+//       return orders;
+    //TODO: to be implmented
+       return new ArrayList<>();
    }
 
    public Order getOrderbyPaymentId(Long payId){
-       return orderRepo1.findByPayment_Id(payId)
-               .orElseThrow(() ->
-                       new EntityNotFoundException("No Order found for payment ID " + payId)
-               );
+//       return orderRepo1.findByPayment_Id(payId)
+//               .orElseThrow(() ->
+//                       new EntityNotFoundException("No Order found for payment ID " + payId)
+//               );
+       //TODO: to be implmented
+       return  new Order();
    }
 }
