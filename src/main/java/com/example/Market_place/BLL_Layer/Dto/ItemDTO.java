@@ -7,7 +7,7 @@ import java.util.List;
 @Setter
 @Getter
 public class ItemDTO {
-    private int id;
+    private Long id;
 
     public String getDescription() {
         return description;
@@ -17,11 +17,11 @@ public class ItemDTO {
         this.description = description;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

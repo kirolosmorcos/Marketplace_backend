@@ -7,6 +7,7 @@ import com.example.Market_place.BLL_Layer.Services.Interfaces.IBaseService;
 import com.example.Market_place.DAL_Layer.Models.Item;
 import com.example.Market_place.DAL_Layer.Models.Order;
 import com.example.Market_place.DAL_Layer.Models.User;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class OrderService implements IBaseService<Order,Long> {
     @Autowired
     private UserService userService;
     @Autowired
-    private ItemService itemService;
+    private ItemRepository itemRepo;
 
     public List<Order> findByUserIdAndStatusWithItems(Long userId, String status)
     {
@@ -38,17 +39,23 @@ public class OrderService implements IBaseService<Order,Long> {
         order.setOrderDate(createOrderDTO.getOrderDate());
         order.setStatus(createOrderDTO.getStatus());  //mohm for checking
         User user = userService.findById(createOrderDTO.getUserId()).get();
+
         order.setBuyer(user);
         order.setBuyerId(user.getId());
+
         order.setTotalPrice(0.0);
 
 
         List<Item >items=new ArrayList<>();
 
         for(Long itemId:createOrderDTO.getItemIds()){
-            Item item =itemService.findById(itemId).get();
+            Item item =itemRepo.findById(itemId).get();
             item.setQuantity(item.getQuantity()-1);
+
             item.setOrder(order);
+            item.setOrderId(order.getOrderId());
+            itemRepo.UpdateItem(item);
+
             items.add(item);
             order.setTotalPrice(order.getTotalPrice()+item.getPrice());
         }
@@ -71,6 +78,7 @@ public class OrderService implements IBaseService<Order,Long> {
                     itemDTO.setId(item.getId());
                     itemDTO.setTitle(item.getTitle());
                     itemDTO.setPrice(item.getPrice());
+
                     itemDTO.setSeller(item.getSeller().getUsername());
                     itemDTO.setImage(item.getImage());
                     return itemDTO;

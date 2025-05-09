@@ -40,11 +40,15 @@ public class Item {
 
     //    @ManyToOne
 //    @JoinColumn(name = "seller_id")
-    private int sellerId;
+    private Long sellerId;
+    @Transient
+    private User seller;
 
     //    @ManyToOne
 //    @JoinColumn(name = "order_id")
-    private int orderId;
+    private Long orderId;
+    @Transient
+    private Order order;
 
    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
    @Transient
@@ -52,19 +56,35 @@ public class Item {
 
     private String status;
 
-    public int getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     }
 
     private int views;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
 
     @PrePersist
     public void prePersist() {
@@ -89,7 +109,7 @@ public class Item {
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -165,7 +185,7 @@ public class Item {
 
    // private LocalDate dateCreated;
 
-    public int getSellerId() {
+    public Long getSellerId() {
         return sellerId;
     }
 }

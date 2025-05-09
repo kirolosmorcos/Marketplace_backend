@@ -51,8 +51,9 @@ public class Order {
 
     //    @ManyToOne
 //    @JoinColumn(name = "payment_payment_id")
-
-    private int paymentId;//foreign
+    @Transient
+    private Payment payment;
+    private Long paymentId;//foreign
 
     public List<Item> getItems() {
         return items;
@@ -78,11 +79,11 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getPaymentId() {
+    public Long getPaymentId() {
         return paymentId;
     }
 
-    public void setPayment(int paymentId) {
+    public void setPayment(Long paymentId) {
         this.paymentId = paymentId;
     }
 
@@ -117,5 +118,6 @@ public class Order {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
 
 }

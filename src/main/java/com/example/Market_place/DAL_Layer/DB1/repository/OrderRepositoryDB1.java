@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface OrderRepositoryDB1 extends IBaseRepoDB1<com.example.Market_place.DAL_Layer.Models.Order,Long> {
     //@Query("SELECT o FROM Order o LEFT JOIN FETCH o.items WHERE o.buyer.id = :userId AND o.status = :status")
     //List<Order> findByUserIdAndStatusWithItems(@Param("userId") Long userId, @Param("status") String status);
-    @EntityGraph(attributePaths = "item")
-    List<Order> findByUserIdAndStatus(Long userId, String status);
-    Optional<Order> findByPayment_Id(Long paymentId);
+
+    //List<Order> findByUserIdAndStatus(Long userId, String status);
+    Optional<Order> findByPaymentId(Long paymentId);
 
 
     @Query("SELECT MAX(i.orderId) FROM Order i ")
