@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 //@RestController
 //@RequestMapping("/products")
@@ -44,10 +45,13 @@ int count=0;
 
 
     //@GetMapping("/{id}")
-    public User findById( Long id) {
-        User one = UserRepo1.findById(id).orElse(null);
-        User two = UserRepo2.findById(id).orElse(null);
-        return one == null ? two : one;
+    public Optional<User> getUser( Long id) {
+        Optional<User> user = UserRepo1.findById(id);
+        if (user.isPresent()) {
+            return user;
+        }
+        Optional<User> user2 = UserRepo2.findById(id);
+        return user2;
     }
 
     //@DeleteMapping("/{id}")

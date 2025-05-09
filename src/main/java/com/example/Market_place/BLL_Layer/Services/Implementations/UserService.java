@@ -22,8 +22,7 @@ public class UserService implements IUserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        //return userRepo.getUser(id);
-        return null;
+        return userRepo.getUser(id);
     }
 
     @Override
