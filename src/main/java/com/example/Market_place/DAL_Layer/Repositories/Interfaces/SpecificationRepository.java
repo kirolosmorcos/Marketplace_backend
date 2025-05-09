@@ -23,7 +23,7 @@ public class SpecificationRepository{
     private SpecificationRepositoryDB1 SpeciRepo1;
     @Autowired
     private SpecificationRepositoryDB2 SpeciRepo2;
-    int cnt=0;
+    int cnt=1;;
 
     public Specification save(Specification specification) {
 //        Long itemId = specification.getItemId();
@@ -33,7 +33,7 @@ public class SpecificationRepository{
 //                new IllegalArgumentException("Item not found for id: " + itemId)
 //        );
 
-        if(++cnt%2==0){
+        if(cnt++%2==0){
             return SpeciRepo1.save(specification);
         }
         return SpeciRepo2.save(specification);

@@ -24,9 +24,15 @@ public class ItemRepository {
 
     @Autowired
     private SpecificationRepository SpecRepo;
-
+    int cnt=1;
     public Item save(Item item) {
-        if (item.getSellerId() % 2 == 0) {
+        List<Specification>specs=item.getSpecifications();
+        for(Specification spec:specs)
+        {
+            spec.setItemId(item.getId());
+            SpecRepo.save(spec);
+        }
+        if (cnt++ %2==0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
             return ItemRepo2.save(item);  // Odd ID → DB2

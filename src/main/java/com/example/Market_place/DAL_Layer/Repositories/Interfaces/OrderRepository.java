@@ -30,9 +30,10 @@ public class OrderRepository{
     @Autowired
     private ItemRepository itemRepo;
 
+    int cnt=1;
     public Order save(Order order) {
 
-       if(order.getBuyerId()%2 == 0){
+       if(cnt++ %2==0){
            return  OrderRepo1.save(order);
        }
        return  OrderRepo2.save(order);
