@@ -5,9 +5,11 @@ import com.example.Market_place.BLL_Layer.Dto.ItemStatisticDTO;
 import com.example.Market_place.BLL_Layer.Dto.SpecificationDTO;
 import com.example.Market_place.BLL_Layer.Dto.UserItemDTO;
 import com.example.Market_place.DAL_Layer.Models.Item;
+import com.example.Market_place.DAL_Layer.Models.Order;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.DAL_Layer.Models.Specification;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.SpecificationRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
     private SpecificationRepository specificationRepo;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Item save(Item item) {
@@ -101,6 +105,18 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         long totalItems = items.stream()
                 .mapToLong(Item::getQuantity)  // Get the quantity for each item
                 .sum();
+
+        List<Order>orders=orderRepository.findByUserIdAndStatusWithItems(userId,"delivered");
+        Long totalOrderItems=0L;
+        for(Order order:orders){
+            List<Item> Orderitems =order.getItems();
+
+            for(Item item:Orderitems){
+                totalOrderItems+=item.getQuantity();
+            }
+
+
+        }
         long soldItems = items.stream()
                 .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
                 .mapToLong(item -> item.getQuantity())  // Map to the quantity of each sold item
@@ -126,7 +142,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         statistics.setTotalItems(totalItems);
         statistics.setSoldItems(soldItems);
         statistics.setTotalMoney(totalMoney);
-
+        statistics.setTotalpurchases(totalOrderItems);
         return statistics;
     }
 

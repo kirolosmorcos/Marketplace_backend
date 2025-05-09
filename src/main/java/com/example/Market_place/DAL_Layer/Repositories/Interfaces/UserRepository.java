@@ -48,7 +48,7 @@ int count=0;
     public Optional<User> findById(Long id) {
         Optional<User> one = UserRepo1.findById(id);
         Optional<User> two = UserRepo2.findById(id);
-        return one == null ? two : one;
+        return one .isEmpty() ? two : one;
     }
 
     //@DeleteMapping("/{id}")

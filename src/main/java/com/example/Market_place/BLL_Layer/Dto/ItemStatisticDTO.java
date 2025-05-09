@@ -6,6 +6,16 @@ public class ItemStatisticDTO {
         private long soldItems;
         private double totalMoney;
 
+    public long getTotalpurchases() {
+        return totalpurchases;
+    }
+
+    public void setTotalpurchases(long totalpurchases) {
+        this.totalpurchases = totalpurchases;
+    }
+
+    private long totalpurchases;
+
         // Getters and setters
         public long getTotalItems() {
             return totalItems;

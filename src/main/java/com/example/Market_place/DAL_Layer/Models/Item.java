@@ -148,5 +148,21 @@ public class Item {
 
     private int views;
    // private LocalDate dateCreated;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
 }
 
