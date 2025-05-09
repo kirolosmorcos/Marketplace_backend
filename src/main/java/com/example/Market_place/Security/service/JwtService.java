@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final String SECRET = "your-256-bit-secret-should-be-long-enough-for-security!"; // ideally from env/config
+    private final String SECRET = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c"; // ideally from env/config
     private final long EXPIRATION = 1000 * 60 * 60 * 10; // 10 hours
 
     private Key getSignInKey() {
