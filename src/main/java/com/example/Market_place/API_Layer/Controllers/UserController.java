@@ -4,6 +4,7 @@ import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.BLL_Layer.Services.Implementations.UserService;
 import com.example.Market_place.DAL_Layer.enums.RoleName;
+import com.example.Market_place.Security.service.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,38 +32,15 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDTO userDto) {
-        User user = new User();
-        user.setUsername(userDto.getEmail());
-        user.setPassword(userDto.getPassword()); // hash this in service later
-        user.setRole(RoleName.ROLE_USER);
-        //TODO: save user credtionals
-//        userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered");
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDto) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
-            );
-
-            // Auth successful → fetch user + generate JWT
-            User user = userService.findByUsername(userDto.getEmail()).orElseThrow();
-            String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
-            return ResponseEntity.ok(token);
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-    }
 //    @PostMapping("/register")
 //    public ResponseEntity<String> register(@RequestBody UserDTO userDto) {
-//        // logic to register user
-//        return ResponseEntity.ok("User registered");
+//        User user = new User();
+//        user.setUsername(userDto.getEmail());
+//        user.setPassword(userDto.getPassword()); // hash this in service later
+//        user.setRole(RoleName.ROLE_USER);
+//        User savedUser = userService.save(user);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser.toString());
 //    }
-
 
 
     @PostMapping("/register")
@@ -74,8 +52,26 @@ public class UserController {
 
         User savedUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-      //  return ResponseEntity.ok("Registered!");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserDTO userDto) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+            );
+
+            // Authentication successful → fetch user + generate JWT
+            User user = userService.findByUsername(userDto.getEmail()).orElseThrow();
+            String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
+            return ResponseEntity.ok(token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -96,10 +92,12 @@ public class UserController {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/login")
-    public String login() {
-        return "Login successful!";
-    }
+
+
+//    @PostMapping("/login")
+//    public String login() {
+//        return "Login successful!";
+//    }
 
     @GetMapping("/hi")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
