@@ -30,6 +30,13 @@ public class ItemRepository{
     public Item save(Item item) {
         item.setId(getNextId());
 
+
+        List<Specification>specs=item.getSpecifications();
+        for(Specification spec:specs)
+        {
+            spec.setItemId(item.getId());
+            SpecRepo.save(spec);
+        }
         if (item.getSellerId() % 2 == 0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
@@ -59,13 +66,13 @@ public class ItemRepository{
     }
 
     //@DeleteMapping("/{id}")
-    public void deleteById( Long id) {
+    public void deleteById(Long id) {
         Item one = ItemRepo1.findById(id).orElse(null);
         Item two = ItemRepo2.findById(id).orElse(null);
-        if (one != null ) {
+        if (one != null) {
             ItemRepo1.deleteById(id);
         }
-        if (two != null ) {
+        if (two != null) {
             ItemRepo2.deleteById(id);
         }
 

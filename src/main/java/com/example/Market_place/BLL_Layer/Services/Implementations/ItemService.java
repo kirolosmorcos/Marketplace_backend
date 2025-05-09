@@ -71,6 +71,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         }
 
         // Fetch items for the user
+        userOptional.get().setUserListings(itemRepo.findBySellerId(userId));
         List<Item> items = userOptional.get().getUserListings();
 
         // Map the Item objects to UserItemDTO
