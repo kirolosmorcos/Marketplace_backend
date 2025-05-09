@@ -16,4 +16,5 @@ public interface OrderRepositoryDB2 extends IBaseRepoDB2<Order,Long> {
     //@EntityGraph(attributePaths = "item")
     //List<Order> findByUserIdAndStatus(Long userId, String status);
     Optional<Order> findByPaymentId(Long paymentId);
+    List<Order> findByBuyerId(Long buyerId);
 }

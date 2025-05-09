@@ -17,5 +17,6 @@ public interface OrderRepositoryDB1 extends IBaseRepoDB1<com.example.Market_plac
 
     //List<Order> findByUserIdAndStatus(Long userId, String status);
     Optional<Order> findByPaymentId(Long paymentId);
+    List<Order> findByBuyerId(Long buyerId);
 
 }

@@ -45,7 +45,7 @@ public class OrderService implements IBaseService<Order,Long> {
 
         order.setTotalPrice(0.0);
 
-
+        order =orderRepo.save(order);
         List<Item >items=new ArrayList<>();
 
         for(Long itemId:createOrderDTO.getItemIds()){
@@ -56,11 +56,14 @@ public class OrderService implements IBaseService<Order,Long> {
             item.setOrderId(order.getOrderId());
             itemRepo.UpdateItem(item);
 
+            User seller = userService.findById(item.getSellerId()).get();
+            item.setSeller(seller);
+
             items.add(item);
             order.setTotalPrice(order.getTotalPrice()+item.getPrice());
         }
         order.setItems(items);
-         orderRepo.save(order);
+
         return mapToOrderDTO(order);
     }
 
