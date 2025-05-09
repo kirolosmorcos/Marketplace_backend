@@ -21,10 +21,11 @@ public class UserRepository {
     private UserRepositoryDB1 UserRepo1;
 @Autowired
     private UserRepositoryDB2 UserRepo2;
-
+int count=0;
     //@PostMapping
     public User save( User user) {
-        if (user.getRating() > 3) {
+        count+=1;
+        if (count %2==0) {
             return UserRepo1.save(user);
         } else {
             return UserRepo2.save(user);
