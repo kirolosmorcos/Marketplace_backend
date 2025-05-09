@@ -22,5 +22,16 @@ public class PurchaseOrder {
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
+    @ManyToOne
+    @JoinColumn(name = "payment_payment_id")
+    private Payment payment;
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 
 }
