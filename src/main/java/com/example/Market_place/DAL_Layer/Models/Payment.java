@@ -8,8 +8,9 @@ import jakarta.persistence.Id;
 @Entity
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
+
+
     private String method;
     private int amount;
 
@@ -21,5 +22,8 @@ public class Payment {
 
     public Long getId() {
         return paymentId;
+    }
+    public void setId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 }

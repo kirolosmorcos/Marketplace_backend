@@ -17,4 +17,6 @@ public interface OrderRepositoryDB2 extends IBaseRepoDB2<Order,Long> {
     List<Order> findByUserIdAndStatus(Long userId, String status);
     Optional<Order> findByPayment_Id(Long paymentId);
 
+    @Query("SELECT MAX(i.orderId) FROM Order i ")
+    Long findMaxId();
 }

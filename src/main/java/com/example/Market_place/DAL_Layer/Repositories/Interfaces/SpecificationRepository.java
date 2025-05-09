@@ -25,6 +25,8 @@ public class SpecificationRepository{
     private SpecificationRepositoryDB2 SpeciRepo2;
 
     public Specification save(Specification specification) {
+        specification.setId(getNextId());
+
         Long itemId = specification.getItemId();
 
         // 1) Load the item (or throw if not found)
@@ -74,5 +76,14 @@ public class SpecificationRepository{
        }
    }
 
+    public Long getNextId() {
+        Long maxId1 = SpeciRepo1.findMaxId();
+        Long maxId2 = SpeciRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
+    }
 }
 

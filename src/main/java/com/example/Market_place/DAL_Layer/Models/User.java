@@ -14,8 +14,8 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "Email is mandatory")
     @Size(min = 2, max = 30, message = "Email must be between 2 and 30 characters")
     @Email(message = "Invalid email format")

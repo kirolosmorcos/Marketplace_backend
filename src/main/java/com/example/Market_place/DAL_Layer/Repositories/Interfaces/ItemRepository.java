@@ -15,6 +15,8 @@ import java.util.Optional;
 
 @Service
 public class ItemRepository{
+    //add static variabl for id instead of quering every time
+
     @Autowired
     private ItemRepositoryDB1 ItemRepo1;
 
@@ -22,6 +24,8 @@ public class ItemRepository{
     private ItemRepositoryDB2 ItemRepo2;
 
     public Item save(Item item) {
+        item.setId(getNextId());
+
         if (item.getSellerId() % 2 == 0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
@@ -69,5 +73,14 @@ public class ItemRepository{
         return items;
     }
 
+    public Long getNextId() {
+        Long maxId1 = ItemRepo1.findMaxId();
+        Long maxId2 = ItemRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
+    }
 
 }

@@ -18,4 +18,7 @@ public interface OrderRepositoryDB1 extends IBaseRepoDB1<com.example.Market_plac
     List<Order> findByUserIdAndStatus(Long userId, String status);
     Optional<Order> findByPayment_Id(Long paymentId);
 
+
+    @Query("SELECT MAX(i.orderId) FROM Order i ")
+    Long findMaxId();
 }

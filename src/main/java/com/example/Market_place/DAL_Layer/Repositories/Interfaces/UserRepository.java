@@ -25,7 +25,7 @@ public class UserRepository {
 int count=0;
     //@PostMapping
     public User save( User user) {
-        //count+=1;
+        user.setId(getNextId());
         if (user.getId() %2==0) {
             return UserRepo1.save(user);
         } else {
@@ -61,5 +61,15 @@ int count=0;
         if (two != null ) {
             UserRepo2.deleteById(id);
         }
+    }
+
+    public Long getNextId() {
+        Long maxId1 = UserRepo1.findMaxId();
+        Long maxId2 = UserRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
     }
 }

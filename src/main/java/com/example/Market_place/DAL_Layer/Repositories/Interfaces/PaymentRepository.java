@@ -21,11 +21,25 @@ public class PaymentRepository {
 
     public Payment save(Payment payment) {
         //get order by payment id
+        payment.setId(getNextId());
+
         Order order = OrderRepo.getOrderbyPaymentId( payment.getId());
         if (order.getOrderId()% 2 == 0) {
             return PaymentRepo1.save(payment);  // Even ID → DB1
         } else {
             return PaymentRepo2.save(payment);  // Odd ID → DB2
         }
+    }
+
+
+
+    public Long getNextId() {
+        Long maxId1 = PaymentRepo1.findMaxId();
+        Long maxId2 = PaymentRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
     }
 }
