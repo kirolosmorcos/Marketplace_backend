@@ -43,79 +43,37 @@ public class UserController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser.toString());
 //    }
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//TODO: delete
-
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO) {
-        System.out.println("[REGISTER] Email: " + userDTO.getEmail());
-        System.out.println("[REGISTER] Raw password: " + userDTO.getPassword());
-
         User user = new User();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setUsername(userDTO.getEmail());
         user.setRole(RoleName.ROLE_USER);
 
         User savedUser = userService.save(user);
-        System.out.println("[REGISTER] Encoded password: " + savedUser.getPassword());
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO userDto) {
-        System.out.println("[LOGIN] Email: " + userDto.getEmail());
-        System.out.println("[LOGIN] Password: " + userDto.getPassword());
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
             );
 
-            System.out.println("[LOGIN] Authentication successful!");
-
+            // Authentication successful → fetch user + generate JWT
             User user = userService.findByUsername(userDto.getEmail()).orElseThrow();
             String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
-
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
-            System.out.println("[LOGIN] Authentication failed: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            // System.out.println("[LOGIN] Authentication failed: " + e.getMessage());
+            // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
-
-//    @PostMapping("/register")
-//    public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO) {
-//        User user = new User();
-//        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//        user.setUsername(userDTO.getEmail());
-//        user.setRole(RoleName.ROLE_USER);
-//
-//        User savedUser = userService.save(user);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody UserDTO userDto) {
-//        try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
-//            );
-//
-//            // Authentication successful → fetch user + generate JWT
-//            User user = userService.findByUsername(userDto.getEmail()).orElseThrow();
-//            String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
-//            return ResponseEntity.ok(token);
-//        } catch (AuthenticationException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//        }
-//    }
-
-
-
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -137,16 +95,9 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
-//    @PostMapping("/login")
-//    public String login() {
-//        return "Login successful!";
-//    }
-
     @GetMapping("/hi")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public String hi() {
         return "Hello, authorized user!";
     }
-
 }
