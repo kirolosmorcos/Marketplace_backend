@@ -63,7 +63,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
 //    }
 
     public List<UserItemDTO> getItemsByUser(long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.getUser(userId);
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -76,7 +76,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
     }
     public ItemDTO createItemForUser(ItemDTO itemDTO, Long userId) {
         // Retrieve the user by userId
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.getUser(userId);
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -149,7 +149,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
             Specification spec = new Specification();
             spec.setLabel(dto.getLabel());
             spec.setSpecValue(dto.getValue());
-            spec.setItem(item); // IMPORTANT: set back-reference
+            spec.setItem(item.getId()); // IMPORTANT: set back-reference
             specs.add(spec);
         }
 

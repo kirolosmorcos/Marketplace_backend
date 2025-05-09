@@ -28,25 +28,23 @@ public class User {
     @Pattern(
             regexp = "^[0-9]{10}$", // Adjust as needed
             message = "Phone number must be 10 digits"
-
     )
     private String phone;
 
     private String sellerAvatar;
 
-
     private double rating;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    //@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     // Foreign key in Item table
-    private List<Item> userListings;
+    private List<Integer> userListings;
 
 //    @ElementCollection
 //    private Vector<Integer> cardInfo;
 
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
-        private List<Order> orders;
+    //@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
+    private List<Integer> ordersId;
 
 
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
@@ -108,11 +106,11 @@ public class User {
         this.rating = rating;
     }
 
-    public List<Item> getUserListings() {
+    public List<Integer> getUserListings() {
         return userListings;
     }
 
-    public void setUserListings(List<Item> userListings) {
+    public void setUserListings(List<Integer> userListings) {
         this.userListings = userListings;
     }
 
@@ -124,12 +122,12 @@ public class User {
 //        this.cardInfo = cardInfo;
 //    }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<Integer> getOrders() {
+        return ordersId;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrders(List<Integer> orders) {
+        this.ordersId = ordersId;
     }
 
 

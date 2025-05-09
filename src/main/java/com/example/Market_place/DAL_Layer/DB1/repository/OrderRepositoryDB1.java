@@ -7,10 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepositoryDB1 extends IBaseRepoDB1<com.example.Market_place.DAL_Layer.Models.Order,Long> {
-    @Query("SELECT o FROM Order o LEFT JOIN FETCH o.items WHERE o.buyer.id = :userId AND o.status = :status")
+    //@Query("SELECT o FROM Order o LEFT JOIN FETCH o.items WHERE o.buyer.id = :userId AND o.status = :status")
     List<Order> findByUserIdAndStatusWithItems(@Param("userId") Long userId, @Param("status") String status);
+    Optional<Order> findByPayment_Id(Long paymentId);
 
 }

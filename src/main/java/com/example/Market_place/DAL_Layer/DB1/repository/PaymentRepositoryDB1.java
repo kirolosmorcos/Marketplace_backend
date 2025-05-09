@@ -1,0 +1,9 @@
+package com.example.Market_place.DAL_Layer.DB1.repository;
+
+import com.example.Market_place.DAL_Layer.Models.Payment;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.IBaseRepo;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PaymentRepositoryDB1 extends IBaseRepo<Payment,Long> {
+}

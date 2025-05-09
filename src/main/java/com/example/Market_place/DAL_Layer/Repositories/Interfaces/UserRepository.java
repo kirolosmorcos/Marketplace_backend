@@ -25,8 +25,8 @@ public class UserRepository {
 int count=0;
     //@PostMapping
     public User save( User user) {
-        count+=1;
-        if (count %2==0) {
+        //count+=1;
+        if (user.getId() %2==0) {
             return UserRepo1.save(user);
         } else {
             return UserRepo2.save(user);

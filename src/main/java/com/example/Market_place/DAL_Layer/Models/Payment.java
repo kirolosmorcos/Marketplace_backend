@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;
+    private Long paymentId;
     private String method;
     private int amount;
 
@@ -19,5 +19,7 @@ public class Payment {
     private int year;
 
 
-
+    public Long getId() {
+        return paymentId;
+    }
 }

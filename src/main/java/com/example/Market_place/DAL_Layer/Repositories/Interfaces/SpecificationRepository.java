@@ -2,43 +2,77 @@ package com.example.Market_place.DAL_Layer.Repositories.Interfaces;
 
 import com.example.Market_place.DAL_Layer.DB1.repository.ItemRepositoryDB1;
 import com.example.Market_place.DAL_Layer.DB1.repository.SpecificationRepositoryDB1;
+import com.example.Market_place.DAL_Layer.DB2.repository.SpecificationRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.Item;
 import com.example.Market_place.DAL_Layer.Models.Specification;
+import com.example.Market_place.DAL_Layer.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SpecificationRepository{
     @Autowired
-    private SpecificationRepositoryDB1 SpecificationRepo1;
+    private ItemRepository itemRepo;         // or your sharding ItemRepository
+
+    @Autowired
+    private SpecificationRepositoryDB1 SpeciRepo1;
+    @Autowired
+    private SpecificationRepositoryDB2 SpeciRepo2;
 
     public Specification save(Specification specification) {
-        return SpecificationRepo1.save(specification);
+        Long itemId = specification.getItemId();
+
+        // 1) Load the item (or throw if not found)
+        Item item = itemRepo.findById(itemId).orElseThrow(() ->
+                new IllegalArgumentException("Item not found for id: " + itemId)
+        );
+
+        if(item.getSellerId()%2==0){
+            return SpeciRepo1.save(specification);
+        }
+        return SpeciRepo2.save(specification);
     }
 
 
     //@GetMapping
     public List<Specification> findAll() {
-        return SpecificationRepo1.findAll();
+        List<Specification> allSpecis = new ArrayList<>();
+        allSpecis.addAll(SpeciRepo1.findAll());
+        allSpecis.addAll(SpeciRepo2.findAll());
+        return allSpecis;
     }
 
 
 
     //@GetMapping("/{id}")
     public Specification findById( Long id) {
-        return SpecificationRepo1.findById(id).orElse(null);
+        Specification speci1 = SpeciRepo1.findById(id).orElse(null);
+        if (speci1==null) {
+            Specification speci2 = SpeciRepo2.findById(id).orElse(null);
+            return speci2;
+        }
+        ;
+        return speci1;
     }
 
     //@DeleteMapping("/{id}")
 
 
    public void deleteById( Long id) {
-        SpecificationRepo1.deleteById(id);
+       Specification one = SpeciRepo1.findById(id).orElse(null);
+       Specification two = SpeciRepo2.findById(id).orElse(null);
+       if (one != null ) {
+           SpeciRepo1.deleteById(id);
+       }
+       if (two != null ) {
+           SpeciRepo2.deleteById(id);
+       }
    }
-
 
 }
 

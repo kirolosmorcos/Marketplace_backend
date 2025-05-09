@@ -42,13 +42,13 @@ public class Item {
 
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private User seller;
+//    @ManyToOne
+//    @JoinColumn(name = "seller_id")
+    private int sellerId;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+//    @ManyToOne
+//    @JoinColumn(name = "order_id")
+    private int orderId;
 
     @PrePersist
     public void prePersist() {
@@ -148,5 +148,9 @@ public class Item {
 
     private int views;
    // private LocalDate dateCreated;
+
+    public int getSellerId() {
+        return sellerId;
+    }
 }
 

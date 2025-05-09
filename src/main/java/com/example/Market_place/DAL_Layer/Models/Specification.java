@@ -24,12 +24,12 @@ public class Specification {
         this.id = id;
     }
 
-    public Item getItem() {
-        return item;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getLabel() {
@@ -48,8 +48,8 @@ public class Specification {
         this.specValue = specValue;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
+//    @ManyToOne
+//    @JoinColumn(name = "item_id")
 
-    private Item item;
+    private int itemId;
 }

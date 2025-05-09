@@ -22,11 +22,7 @@ public class ItemRepository{
     private ItemRepositoryDB2 ItemRepo2;
 
     public Item save(Item item) {
-        if (item.getSeller() == null || item.getSeller().getId() == null) {
-            throw new IllegalArgumentException("Seller or seller ID must not be null");
-        }
-
-        if (item.getSeller().getId() % 2 == 0) {
+        if (item.getSellerId() % 2 == 0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
             return ItemRepo2.save(item);  // Odd ID → DB2
@@ -72,5 +68,6 @@ public class ItemRepository{
         items.addAll(ItemRepo2.findAllWithSpecifications());
         return items;
     }
+
 
 }

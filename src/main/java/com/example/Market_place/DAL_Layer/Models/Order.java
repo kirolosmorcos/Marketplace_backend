@@ -15,8 +15,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
-    private List<Item> items;
+    //@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
+    private List<Integer> itemId;
     private String paymentMethod;
     private String status;
 
@@ -24,20 +24,28 @@ public class Order {
     private LocalDate receivedDate;
     private Double totalPrice;
 
-    public User getBuyer() {
-        return buyer;
+    //    @ManyToOne
+//    @JoinColumn(name = "buyer_id")
+    private int buyerId;
+
+    //    @ManyToOne
+//    @JoinColumn(name = "payment_payment_id")
+    private int paymentId;
+
+    public int getBuyer() {
+        return buyerId;
     }
 
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
+    public void setBuyer(int buyer) {
+        this.buyerId = buyerId;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Integer> getItems() {
+        return itemId;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setItems(List<Integer> itemId) {
+        this.itemId = itemId;
     }
 
     public LocalDate getOrderDate() {
@@ -56,12 +64,12 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public int getPaymentId() {
+        return paymentId;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setPayment(int paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getPaymentMethod() {
@@ -96,11 +104,4 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    private User buyer;
-
-    @ManyToOne
-    @JoinColumn(name = "payment_payment_id")
-    private Payment payment;
 }
