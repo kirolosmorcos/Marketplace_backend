@@ -14,7 +14,7 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Long orderId;
     //@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
 
     @Transient
@@ -52,8 +52,9 @@ public class Order {
 
     //    @ManyToOne
 //    @JoinColumn(name = "payment_payment_id")
-
-    private int paymentId;//foreign
+    @Transient
+    private Payment payment;
+    private Long paymentId;//foreign
 
     public List<Item> getItems() {
         return items;
@@ -71,11 +72,11 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public int getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
@@ -83,7 +84,7 @@ public class Order {
         return paymentId;
     }
 
-    public void setPayment(int paymentId) {
+    public void setPayment(Long paymentId) {
         this.paymentId = paymentId;
     }
 
@@ -118,5 +119,6 @@ public class Order {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
 
 }

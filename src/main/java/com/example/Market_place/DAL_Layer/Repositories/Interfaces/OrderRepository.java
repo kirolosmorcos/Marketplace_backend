@@ -4,6 +4,7 @@ import com.example.Market_place.DAL_Layer.DB1.repository.OrderRepositoryDB1;
 import com.example.Market_place.DAL_Layer.DB2.repository.OrderRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.Item;
 import com.example.Market_place.DAL_Layer.Models.Order;
+import com.example.Market_place.DAL_Layer.Models.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderRepository{
@@ -21,15 +23,27 @@ public class OrderRepository{
     private OrderRepositoryDB1 OrderRepo1;
     @Autowired
     private OrderRepositoryDB2 OrderRepo2;
+    @Autowired
+    private UserRepository UserRepo;
 
    public Order save(Order order) {
+
        if(order.getBuyerId()%2 == 0){
            return  OrderRepo1.save(order);
        }
        return  OrderRepo2.save(order);
    }
 
-
+//TODO: check id before saving
+    public boolean idExists(Order order){
+       if(OrderRepo1.findById(order.getOrderId()).isPresent()){
+           return false;
+        }
+        if (OrderRepo1.findById(order.getOrderId()).isPresent()){
+            return false;
+        }
+        return true;
+    }
     //@GetMapping
   public List<Order> findAll() {
       List<Order> allOrders = new ArrayList<>();
@@ -61,22 +75,27 @@ public class OrderRepository{
             OrderRepo2.deleteById(id);
         }
     }
-   public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {
-       List<Order> orders = new ArrayList<>();
-       orders.addAll(OrderRepo1.findByUserIdAndStatus(userId, status));
-       orders.addAll(OrderRepo2.findByUserIdAndStatus(userId, status));
 
-       return orders;
+   public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {
+       List<Order> allOrders = new ArrayList<>();
+
+       User user = UserRepo.findById(userId).orElse(null);
+       allOrders = user.getOrders();
+       List<Order> filteredOrders = allOrders.stream()
+               .filter(order -> status.equals(order.getStatus()))
+               .collect(Collectors.toList());
+
+       return filteredOrders;
    }
 
    public Order getOrderbyPaymentId(Long payId){
-       Optional<Order> order = OrderRepo1.findByPayment_Id(payId);
+       Optional<Order> order = OrderRepo1.findByPaymentId(payId);
        if (order.isPresent()) {
            return order.get();
        }
 
        // Fallback to DB2
-       Optional<Order> order2 = OrderRepo2.findByPayment_Id(payId);
+       Optional<Order> order2 = OrderRepo2.findByPaymentId(payId);
        return order2.get();
 
    }

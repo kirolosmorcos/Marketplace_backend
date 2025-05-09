@@ -69,8 +69,14 @@ public class ItemRepository {
         return items;
     }
    public void UpdateItem(Item item){//need implementation
-       ItemRepo1.save(item);
-       ItemRepo2.save(item);
+       Item one = ItemRepo1.findById(item.getId()).orElse(null);
+       Item two = ItemRepo2.findById(item.getId()).orElse(null);
+       if (one != null) {
+           ItemRepo1.save(item);
+       }
+       if (two != null) {
+           ItemRepo2.save(item);
+       }
    }
 
     public List<Item> findBySellerId(Long userId) {
