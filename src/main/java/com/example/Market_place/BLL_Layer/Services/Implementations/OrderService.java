@@ -38,7 +38,8 @@ public class OrderService implements IBaseService<Order,Long> {
         order.setOrderDate(createOrderDTO.getOrderDate());
         order.setStatus(createOrderDTO.getStatus());  //mohm for checking
         User user = userService.findById(createOrderDTO.getUserId()).get();
-        order.setBuyer(user);
+        order.setBuyer(user);//
+        order.setBuyerId(user.getId());//database foreign key
         order.setTotalPrice(0.0);
 
 

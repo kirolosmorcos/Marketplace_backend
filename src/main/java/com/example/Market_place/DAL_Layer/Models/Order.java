@@ -96,9 +96,10 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
+@Transient
     private User buyer;
+
+    private Long buyerId;
 
     @ManyToOne
     @JoinColumn(name = "payment_payment_id")
