@@ -45,13 +45,10 @@ int count=0;
 
 
     //@GetMapping("/{id}")
-    public Optional<User> getUser( Long id) {
-        Optional<User> user = UserRepo1.findById(id);
-        if (user.isPresent()) {
-            return user;
-        }
-        Optional<User> user2 = UserRepo2.findById(id);
-        return user2;
+    public Optional<User> findById(Long id) {
+        Optional<User> one = UserRepo1.findById(id);
+        Optional<User> two = UserRepo2.findById(id);
+        return one .isEmpty() ? two : one;
     }
 
     //@DeleteMapping("/{id}")
@@ -64,6 +61,5 @@ int count=0;
         if (two != null ) {
             UserRepo2.deleteById(id);
         }
-
     }
 }

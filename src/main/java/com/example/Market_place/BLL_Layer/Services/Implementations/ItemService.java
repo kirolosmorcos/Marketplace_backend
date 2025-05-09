@@ -5,9 +5,11 @@ import com.example.Market_place.BLL_Layer.Dto.ItemStatisticDTO;
 import com.example.Market_place.BLL_Layer.Dto.SpecificationDTO;
 import com.example.Market_place.BLL_Layer.Dto.UserItemDTO;
 import com.example.Market_place.DAL_Layer.Models.Item;
+import com.example.Market_place.DAL_Layer.Models.Order;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.DAL_Layer.Models.Specification;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.SpecificationRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +28,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
     private SpecificationRepository specificationRepo;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Item save(Item item) {
@@ -101,6 +103,18 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         long totalItems = items.stream()
                 .mapToLong(Item::getQuantity)  // Get the quantity for each item
                 .sum();
+
+        List<Order>orders=orderRepository.findByUserIdAndStatusWithItems(userId,"delivered");
+        Long totalOrderItems=0L;
+        for(Order order:orders){
+            List<Item> Orderitems =order.getItems();
+
+            for(Item item:Orderitems){
+                totalOrderItems+=item.getQuantity();
+            }
+
+
+        }
         long soldItems = items.stream()
                 .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
                 .mapToLong(item -> item.getQuantity())  // Map to the quantity of each sold item
@@ -126,7 +140,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         statistics.setTotalItems(totalItems);
         statistics.setSoldItems(soldItems);
         statistics.setTotalMoney(totalMoney);
-
+        statistics.setTotalpurchases(totalOrderItems);
         return statistics;
     }
 
@@ -212,4 +226,64 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         }
         return item;
     }
+//    public ItemDTO updateItem(Long itemId, ItemDTO itemDTO) {
+//        Optional<Item> existingItemOptional = itemRepo.findById(itemId);
+//        if (existingItemOptional.isEmpty()) {
+//            throw new RuntimeException("Item not found with ID: " + itemId);
+//        }
+//
+//        Item existingItem = existingItemOptional.get();
+//
+//        existingItem.setTitle(itemDTO.getTitle());
+//        existingItem.setPrice(itemDTO.getPrice());
+//        existingItem.setImage(itemDTO.getImage());
+//        existingItem.setQuantity(itemDTO.getQuantity());
+//        existingItem.setDescription(itemDTO.getDescription());
+//        existingItem.setRating(itemDTO.getRating());
+//        existingItem.setStatus(itemDTO.getStatus());
+/// ////////////////////////////////////////////////////////////////
+//        existingItem.getSpecifications().clear();
+//        List<Specification> updatedSpecs = new ArrayList<>();
+//        for (SpecificationDTO dto : itemDTO.getSpecifications()) {
+//            Specification spec = new Specification();
+//            spec.setLabel(dto.getLabel());
+//            spec.setSpecValue(dto.getValue());
+//            spec.setItem(existingItem); // Set back-reference
+//            updatedSpecs.add(spec);
+//        }
+//       // existingItem.setSpecifications(updatedSpecs);
+
+//        // Don't clear specifications
+//        List<Specification> existingSpecs = existingItem.getSpecifications();
+//        Map<String, Specification> specMap = existingSpecs.stream()
+//                .collect(Collectors.toMap(Specification::getLabel, spec -> spec));
+//
+//// /////////////////////////////////////Track updated labels
+//        Set<String> updatedLabels = new HashSet<>();
+//
+//        for (SpecificationDTO dto : itemDTO.getSpecifications()) {
+//            Specification existingSpec = specMap.get(dto.getLabel());
+//            if (existingSpec != null) {
+//                // Update existing spec
+//                existingSpec.setSpecValue(dto.getValue());
+//            } else {
+//                // Add new spec
+//                Specification newSpec = new Specification();
+//                newSpec.setLabel(dto.getLabel());
+//                newSpec.setSpecValue(dto.getValue());
+//                newSpec.setItem(existingItem);
+//                existingSpecs.add(newSpec);
+//            }
+//            updatedLabels.add(dto.getLabel());
+//        }
+//
+//// Remove specs that are no longer present
+//        existingSpecs.removeIf(spec -> !updatedLabels.contains(spec.getLabel()));
+/// /////////////////////////////////////////////////////////////////////////////////////
+
+//        existingItem.setSeller(existingItem.getSeller());
+//        Item savedItem = itemRepo.save(existingItem);
+//        return mapToItemDTO(savedItem);
+//    }
+
 }

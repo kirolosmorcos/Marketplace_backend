@@ -1,5 +1,6 @@
 package com.example.Market_place.BLL_Layer.Dto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +25,11 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
+    private String phone;
+
+    private String sellerAvatar;
+
+    private double rating;
 }
