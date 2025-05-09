@@ -16,26 +16,24 @@ public class UserService implements IUserService {
 
     @Override
     public User save(User user) {
-        //return userRepo.addUser(user);
-        return new User();
+        return userRepo.save(user);
+
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        //return userRepo.getUser(id);
-        return null;
+        return userRepo.findById(id);
+
     }
 
     @Override
     public List<User> findAll() {
-        //return userRepo.getAllUsers();
-        List UserList = new ArrayList();
-        return UserList;
+        return userRepo.findAll();
+
     }
 
     @Override
     public void deleteById(Long id) {
-        //userRepo.deleteUser(id);
-    }
+        userRepo.deleteById(id);}
 
 }

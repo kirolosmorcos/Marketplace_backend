@@ -1,19 +1,24 @@
 package com.example.Market_place.BLL_Layer.Services.Implementations;
 
 import com.example.Market_place.BLL_Layer.Dto.ItemDTO;
+import com.example.Market_place.BLL_Layer.Dto.ItemStatisticDTO;
 import com.example.Market_place.BLL_Layer.Dto.SpecificationDTO;
+import com.example.Market_place.BLL_Layer.Dto.UserItemDTO;
 import com.example.Market_place.DAL_Layer.Models.Item;
-import com.example.Market_place.DAL_Layer.Models.Specification;
 import com.example.Market_place.DAL_Layer.Models.User;
+import com.example.Market_place.DAL_Layer.Models.Specification;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.SpecificationRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService implements com.example.Market_place.BLL_Layer.Services.Interfaces.IItemService {
@@ -21,6 +26,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
     private ItemRepository itemRepo;
     @Autowired
     private SpecificationRepository specificationRepo;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Item save(Item item) {
@@ -51,6 +58,80 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         return itemRepo.findAllWithSpecifications();
     }
 
+//    public List<UserItemDTO> getItemsByUser(int userId) {
+//        return itemRepo.findItemsByUserId(userId);
+//    }
+
+    public List<UserItemDTO> getItemsByUser(long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        // Fetch items for the user
+        List<Item> items = userOptional.get().getUserListings();
+
+        // Map the Item objects to UserItemDTO
+        return items.stream().map(this::mapToUserItemDTO).collect(Collectors.toList());
+    }
+    public ItemDTO createItemForUser(ItemDTO itemDTO, Long userId) {
+        // Retrieve the user by userId
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User user = userOptional.get();
+
+        Item item = mapToItem(itemDTO);
+
+        item.setSeller(user);
+
+        Item savedItem = save(item);
+
+        return mapToItemDTO(savedItem);
+    }
+
+
+    public ItemStatisticDTO getItemStatisticsForUser(Long userId) {
+        // Fetch the items associated with the user
+        List<Item> items = itemRepo.findBySellerId(userId); // Assuming you have a method in ItemRepository to find items by seller ID
+
+        // Calculate statistics
+        long totalItems = items.stream()
+                .mapToLong(Item::getQuantity)  // Get the quantity for each item
+                .sum();
+        long soldItems = items.stream()
+                .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
+                .mapToLong(item -> item.getQuantity())  // Map to the quantity of each sold item
+                .sum();  // Sum up the quantities to get the total number of sold items
+
+// Calculate total money, including quantity
+        double totalMoney = items.stream()
+                .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())  // Multiply the price by the quantity for each sold item
+                .sum();  // Sum up the total money for all sold items
+
+//        long soldItems = items.stream()
+//                .mapToLong(Item::getQuantitySold)  // Get the quantitySold for each item
+//                .sum();  // Sum all the sold quantities
+//
+//// Calculate total money from sold items (using quantitySold and price)
+//        double totalMoney = items.stream()
+//                .mapToDouble(item -> item.getPrice() * item.getQuantitySold())  // Price * quantitySold for each item
+//                .sum();  // Sum all the totals
+
+        // Create and return the statistics DTO
+        ItemStatisticDTO statistics = new ItemStatisticDTO();
+        statistics.setTotalItems(totalItems);
+        statistics.setSoldItems(soldItems);
+        statistics.setTotalMoney(totalMoney);
+
+        return statistics;
+    }
+
+
+
     public Item mapToItem(ItemDTO itemDTO) {
         Item item = new Item();
         item.setTitle(itemDTO.getTitle());
@@ -60,6 +141,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         item.setDescription(itemDTO.getDescription());
         item.setRating(itemDTO.getRating());
         item.setStatus(itemDTO.getStatus());
+       // item.setSeller(user);
+
 
         List<Specification> specs = new ArrayList<>();
         for (SpecificationDTO dto : itemDTO.getSpecifications()) {
@@ -84,6 +167,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         dto.setDescription(item.getDescription());
         dto.setRating(item.getRating());
         dto.setStatus(item.getStatus());
+        //dto.setUserId(item.getSeller().getId());
+
 
         List<SpecificationDTO> specDTOs = new ArrayList<>();
         for (Specification spec : item.getSpecifications()) {
@@ -96,5 +181,35 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         dto.setSpecifications(specDTOs);
 
         return dto;
+    }
+    public UserItemDTO mapToUserItemDTO(Item item) {
+        UserItemDTO dto = new UserItemDTO();
+        dto.setId(item.getId());  // assuming `id` is Long, convert to String
+        dto.setTitle(item.getTitle());
+        dto.setPrice(item.getPrice());
+        dto.setStatus(item.getStatus());
+        dto.setImage(item.getImage());
+        dto.setViews(item.getViews());  // Assuming `views` is a property in Item
+        //dto.setCreated(item.getDateCreated().toString());// Assuming `created` is a Date, convert it to String
+        if (item.getDateCreated() != null) {
+            dto.setDateCreated(item.getDateCreated().toString());  // Convert to string
+        }
+
+        return dto;
+    }
+    public Item mapToItemFromUserItemDTO(UserItemDTO userItemDTO) {
+        Item item = new Item();
+        item.setId(item.getId());  // Assuming the id in UserItemDTO is String, converting to Long
+        item.setTitle(userItemDTO.getTitle());
+        item.setPrice(userItemDTO.getPrice());
+        item.setStatus(userItemDTO.getStatus());
+        item.setImage(userItemDTO.getImage());
+        item.setViews(userItemDTO.getViews());  // Assuming the views are available in UserItemDTO
+       // item.setDateCreated(LocalDate.parse(userItemDTO.getCreated())); // Assuming 'created' is a String in the format yyyy-MM-dd
+        if (userItemDTO.getDateCreated() != null) {
+            LocalDate dateCreated = LocalDate.parse(userItemDTO.getDateCreated(), DateTimeFormatter.ISO_LOCAL_DATE);
+            item.setDateCreated(dateCreated);
+        }
+        return item;
     }
 }

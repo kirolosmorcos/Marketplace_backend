@@ -11,24 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-
-public  class Item {
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
-
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -37,9 +20,21 @@ public  class Item {
     private String image;
     private int quantity;
 
+//    public int getQuantitySold() {
+//        return quantitySold;
+//    }
+//
+//    public void setQuantitySold(int quantitySold) {
+//        this.quantitySold = quantitySold;
+//    }
+//
+//    private int quantitySold;
+
 
     private String description;
     private double rating;
+    @Column(nullable = false)
+    private LocalDate dateCreated;
 
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
@@ -55,6 +50,12 @@ public  class Item {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @PrePersist
+    public void prePersist() {
+        if (this.dateCreated == null) {
+            this.dateCreated = LocalDate.now();  // Set current date when the entity is persisted
+        }
+    }
 
     public LocalDate getDateCreated() {
         return dateCreated;
@@ -144,7 +145,8 @@ public  class Item {
         this.views = views;
     }
 
+
     private int views;
-    private LocalDate dateCreated;
+   // private LocalDate dateCreated;
 }
 
