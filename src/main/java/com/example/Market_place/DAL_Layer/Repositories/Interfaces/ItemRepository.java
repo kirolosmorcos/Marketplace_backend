@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ItemRepository{
+public class ItemRepository {
     @Autowired
     private ItemRepositoryDB1 ItemRepo1;
 
@@ -35,9 +35,8 @@ public class ItemRepository{
         List<Item> allItems = new ArrayList<>();
         allItems.addAll(ItemRepo1.findAll());
         allItems.addAll(ItemRepo2.findAll());
-       return allItems;
+        return allItems;
     }
-
 
 
     //@GetMapping("/{id}")
@@ -51,17 +50,18 @@ public class ItemRepository{
     }
 
     //@DeleteMapping("/{id}")
-    public void deleteById( Long id) {
+    public void deleteById(Long id) {
         Item one = ItemRepo1.findById(id).orElse(null);
         Item two = ItemRepo2.findById(id).orElse(null);
-        if (one != null ) {
+        if (one != null) {
             ItemRepo1.deleteById(id);
         }
-        if (two != null ) {
+        if (two != null) {
             ItemRepo2.deleteById(id);
         }
 
     }
+
     public List<Item> findAllWithSpecifications() {
         List<Item> items = new ArrayList<>();
         items.addAll(ItemRepo1.findAllWithSpecifications());
@@ -70,4 +70,11 @@ public class ItemRepository{
     }
 
 
+    public List<Item> findBySellerId(Long userId) {
+        List<Item> items = new ArrayList<>();
+        items.addAll(ItemRepo1.findBySellerId(userId));
+        items.addAll(ItemRepo2.findBySellerId(userId));
+        return items;
+    }
 }
+

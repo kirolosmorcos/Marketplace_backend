@@ -12,13 +12,13 @@ import lombok.Setter;
 public class Specification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String label;
     private String specValue;
 
     @Transient
     private Item item;
-    private Long itemId;
+    private int itemId;
 
     public Item getItem() {
         return item;
@@ -28,19 +28,19 @@ public class Specification {
         this.item = item;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(Long itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 

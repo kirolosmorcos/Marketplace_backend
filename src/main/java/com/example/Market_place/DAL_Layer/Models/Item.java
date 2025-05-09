@@ -14,7 +14,7 @@ import java.util.List;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String title;
     private double price;
     private String image;
@@ -38,7 +38,12 @@ public class Item {
 
     //    @ManyToOne
 //    @JoinColumn(name = "seller_id")
-    private int sellerId;
+    private Long sellerId;
+
+
+
+    @Transient
+    private User seller;
 
     //    @ManyToOne
 //    @JoinColumn(name = "order_id")
@@ -58,7 +63,7 @@ public class Item {
         this.orderId = orderId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     }
 
@@ -87,11 +92,11 @@ public class Item {
         this.description = description;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -163,8 +168,13 @@ public class Item {
 
    // private LocalDate dateCreated;
 
-    public int getSellerId() {
+    public Long getSellerId() {
         return sellerId;
     }
+
+    public User getSeller() {return seller;}
+
+    public void setSeller(User seller) {this.seller = seller;}
+
 }
 
