@@ -2,13 +2,33 @@ package com.example.Market_place.DAL_Layer.Models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 
 public  class Item {
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,9 +47,14 @@ public  class Item {
 
     private String status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "seller_id")
-//    private User seller;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
 
     public LocalDate getDateCreated() {
         return dateCreated;

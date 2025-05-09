@@ -6,12 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Setter;
 
 
-import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Vector;
 
 @Entity
 @Table(name = "users")
@@ -40,16 +37,16 @@ public class User {
 
     private double rating;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id") // Foreign key in Item table
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    // Foreign key in Item table
     private List<Item> userListings;
 
-    @ElementCollection
-    private Vector<Integer> cardInfo;
+//    @ElementCollection
+//    private Vector<Integer> cardInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "buyer_id") // Foreign key in Item table
-        private List<PurchaseOrder> orders;
+
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
+        private List<Order> orders;
 
 
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
@@ -119,19 +116,19 @@ public class User {
         this.userListings = userListings;
     }
 
-    public Vector<Integer> getCardInfo() {
-        return cardInfo;
-    }
+//    public Vector<Integer> getCardInfo() {
+//        return cardInfo;
+//    }
+//
+//    public void setCardInfo(Vector<Integer> cardInfo) {
+//        this.cardInfo = cardInfo;
+//    }
 
-    public void setCardInfo(Vector<Integer> cardInfo) {
-        this.cardInfo = cardInfo;
-    }
-
-    public List<PurchaseOrder> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<PurchaseOrder> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
