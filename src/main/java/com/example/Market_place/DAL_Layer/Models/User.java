@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
@@ -49,7 +50,7 @@ public class User  { //implements UserDetails
     private List<Item> userListings;
 
     @ElementCollection
-    private Vector<Integer> cardInfo;
+    private List<Integer> cardInfo = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "buyer_id") // Foreign key in Item table
@@ -146,11 +147,11 @@ public class User  { //implements UserDetails
         this.userListings = userListings;
     }
 
-    public Vector<Integer> getCardInfo() {
+    public List<Integer> getCardInfo() {
         return cardInfo;
     }
 
-    public void setCardInfo(Vector<Integer> cardInfo) {
+    public void setCardInfo(List<Integer> cardInfo) {
         this.cardInfo = cardInfo;
     }
 
