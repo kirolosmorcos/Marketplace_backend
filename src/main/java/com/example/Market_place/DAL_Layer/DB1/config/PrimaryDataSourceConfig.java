@@ -43,7 +43,7 @@ public class PrimaryDataSourceConfig {
     }
 
     @Primary
-    @Bean(name = "firstEntityManagerFactoryBean")
+    @Bean(name = {"firstEntityManagerFactoryBean", "entityManagerFactory"})
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setDataSource(dataSource());
