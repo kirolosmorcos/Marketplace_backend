@@ -29,17 +29,17 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
 //            specificationRepo.save(spec);
 //        }
 // Save item → automatically saves specifications too
-        return itemRepo.addItem(item);
+        return itemRepo.save(item);
 
     }
     @Override
     public void deleteById(Long id) {
-        itemRepo.deleteItem(id);
+        itemRepo.deleteById(id);
     }
 
     @Override
     public Optional<Item> findById(Long id) {
-        return itemRepo.getItem(id);
+        return itemRepo.findById(id);
     }
 
     @Override

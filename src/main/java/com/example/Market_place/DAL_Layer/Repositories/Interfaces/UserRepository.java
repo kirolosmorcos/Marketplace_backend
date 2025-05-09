@@ -5,6 +5,8 @@ import com.example.Market_place.DAL_Layer.DB2.repository.UserRepositoryDB2;
 import com.example.Market_place.DAL_Layer.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,15 +14,16 @@ import java.util.List;
 
 //@RestController
 //@RequestMapping("/products")
-
+@Service
 public class UserRepository {
 
-
+@Autowired
     private UserRepositoryDB1 UserRepo1;
+@Autowired
     private UserRepositoryDB2 UserRepo2;
 
     //@PostMapping
-    public User addUser( User user) {
+    public User save( User user) {
         if (user.getId() % 2 == 0) {
             return UserRepo1.save(user);
         } else {
@@ -30,7 +33,7 @@ public class UserRepository {
 
 
     //@GetMapping
-    public List<User> getAllUsers() {
+    public List<User> findAll() {
         List<User> allUsers = new ArrayList<>();
         allUsers.addAll(UserRepo1.findAll());
         allUsers.addAll(UserRepo2.findAll());
@@ -40,14 +43,14 @@ public class UserRepository {
 
 
     //@GetMapping("/{id}")
-    public User getUser( Long id) {
+    public User findById( Long id) {
         User one = UserRepo1.findById(id).orElse(null);
         User two = UserRepo2.findById(id).orElse(null);
         return one == null ? two : one;
     }
 
     //@DeleteMapping("/{id}")
-    public void deleteUser( Long id) {
+    public void deleteById( Long id) {
         User one = UserRepo1.findById(id).orElse(null);
         User two = UserRepo2.findById(id).orElse(null);
         if (one != null ) {
