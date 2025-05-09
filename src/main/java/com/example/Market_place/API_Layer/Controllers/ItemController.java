@@ -80,6 +80,12 @@ public ResponseEntity<ItemDTO> createItem(@PathVariable Long userId, @RequestBod
         // Get the item statistics for the user
         return itemService.getItemStatisticsForUser(userId);
     }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<ItemDTO> updateItem(@PathVariable Long id, @RequestBody @Valid ItemDTO itemDTO) {
+//        ItemDTO updatedItem = itemService.updateItem(id, itemDTO);
+//        return ResponseEntity.ok(updatedItem);
+//    }
+
 
 }
 

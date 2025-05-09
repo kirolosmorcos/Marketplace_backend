@@ -66,4 +66,25 @@ public class UserController {
         return "Logout successful!";
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
+        Optional<User> optionalUser = userService.findById(id);
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User existingUser = optionalUser.get();
+        existingUser.setUsername(userDTO.getEmail());
+        existingUser.setPassword(userDTO.getPassword());
+        existingUser.setPhone(userDTO.getPhone());
+        existingUser.setSellerAvatar(userDTO.getSellerAvatar());
+        existingUser.setRating(userDTO.getRating());
+
+
+        User updatedUser = userService.save(existingUser);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+
 }
