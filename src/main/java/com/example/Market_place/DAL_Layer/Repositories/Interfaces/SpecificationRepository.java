@@ -23,7 +23,7 @@ public class SpecificationRepository{
     private SpecificationRepositoryDB1 SpeciRepo1;
     @Autowired
     private SpecificationRepositoryDB2 SpeciRepo2;
-    int cnt=1;;
+    int cnt=0;
 
     public Specification save(Specification specification) {
 //        Long itemId = specification.getItemId();
@@ -34,7 +34,7 @@ public class SpecificationRepository{
 //        );
         specification.setId(getNextId());
 
-        if(cnt++%2==0){
+        if(specification.getId() % 2 == 0){
             return SpeciRepo1.save(specification);
         }
         return SpeciRepo2.save(specification);
@@ -48,8 +48,6 @@ public class SpecificationRepository{
         allSpecis.addAll(SpeciRepo2.findAll());
         return allSpecis;
     }
-
-
 
     //@GetMapping("/{id}")
     public Specification findById( Long id) {
