@@ -83,8 +83,11 @@ public class OrderRepository{
    public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {//need implementation with join
        List<Order> allOrders = new ArrayList<>();
 
-       User user = UserRepo.findById(userId).orElse(null);
-       allOrders = user.getOrders();
+       //User user = UserRepo.findById(userId).orElse(null);
+
+       allOrders.addAll(OrderRepo1.findByBuyerId(userId));
+       allOrders.addAll(OrderRepo2.findByBuyerId(userId));
+
        List<Order> filteredOrders = allOrders.stream()
                .filter(order -> status.equals(order.getStatus()))
                .collect(Collectors.toList());
@@ -92,6 +95,10 @@ public class OrderRepository{
        {
            List<Item> items=new ArrayList<>();
            items.addAll(itemRepo.findByOrderId(order.getOrderId()));
+           for(Item item:items)
+           {
+               item.setSeller(UserRepo.findById(item.getSellerId()).orElseThrow(EntityNotFoundException::new));
+           }
            order.setItems(items);
        }
 
