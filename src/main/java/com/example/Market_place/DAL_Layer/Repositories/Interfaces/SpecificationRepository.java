@@ -37,7 +37,8 @@ public class SpecificationRepository{
         if(specification.getId() % 2 == 0){
             return SpeciRepo1.save(specification);
         }
-        return SpeciRepo2.save(specification);
+        else
+            return SpeciRepo2.save(specification);
     }
 
 

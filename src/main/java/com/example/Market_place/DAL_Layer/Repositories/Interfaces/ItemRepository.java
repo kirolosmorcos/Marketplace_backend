@@ -37,7 +37,7 @@ public class ItemRepository{
             spec.setItemId(item.getId());
             SpecRepo.save(spec);
         }
-        if (item.getSellerId() % 2 == 0) {
+        if (item.getId() % 2 == 0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
             return ItemRepo2.save(item);  // Odd ID → DB2

@@ -32,10 +32,11 @@ public class OrderRepository{
 
    public Order save(Order order) {
        order.setOrderId(getNextId());
-       if(order.getBuyerId() % 2 == 0){
+       if(order.getOrderId() % 2 == 0){
            return  OrderRepo1.save(order);
        }
-       return  OrderRepo2.save(order);
+       else
+           return  OrderRepo2.save(order);
    }
 
 //TODO: check id before saving

@@ -24,7 +24,7 @@ public class PaymentRepository {
         payment.setId(getNextId());
 
         Order order = OrderRepo.getOrderbyPaymentId( payment.getId());
-        if (order.getOrderId()% 2 == 0) {
+        if (payment.getId()% 2 == 0) {
             return PaymentRepo1.save(payment);  // Even ID → DB1
         } else {
             return PaymentRepo2.save(payment);  // Odd ID → DB2
