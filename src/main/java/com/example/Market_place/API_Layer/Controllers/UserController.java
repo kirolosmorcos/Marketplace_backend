@@ -36,7 +36,8 @@ public class UserController {
         user.setUsername(userDto.getEmail());
         user.setPassword(userDto.getPassword()); // hash this in service later
         user.setRole(RoleName.ROLE_USER);
-        userService.save(user);
+        //TODO: save user credtionals
+//        userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered");
     }
 
