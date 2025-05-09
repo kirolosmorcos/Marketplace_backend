@@ -18,7 +18,7 @@ public class Specification {
 
     @Transient
     private Item item;
-    private int itemId;
+    private Long itemId;
 
     public Item getItem() {
         return item;
@@ -36,11 +36,11 @@ public class Specification {
         this.id = id;
     }
 
-    public int getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

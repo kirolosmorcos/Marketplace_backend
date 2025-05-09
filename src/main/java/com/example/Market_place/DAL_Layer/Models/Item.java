@@ -14,7 +14,7 @@ import java.util.List;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
     private double price;
     private String image;
@@ -39,15 +39,14 @@ public class Item {
     //    @ManyToOne
 //    @JoinColumn(name = "seller_id")
     private Long sellerId;
-
-
-
     @Transient
     private User seller;
 
     //    @ManyToOne
 //    @JoinColumn(name = "order_id")
     private int orderId;
+    @Transient
+    private Order order;
 
    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
    @Transient
@@ -68,6 +67,22 @@ public class Item {
     }
 
     private int views;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
 
     @PrePersist
     public void prePersist() {
@@ -92,11 +107,11 @@ public class Item {
         this.description = description;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -171,10 +186,5 @@ public class Item {
     public Long getSellerId() {
         return sellerId;
     }
-
-    public User getSeller() {return seller;}
-
-    public void setSeller(User seller) {this.seller = seller;}
-
 }
 

@@ -68,7 +68,10 @@ public class ItemRepository {
         items.addAll(ItemRepo2.findAllWithSpecifications());
         return items;
     }
-
+   public void UpdateItem(Item item){//need implementation
+       ItemRepo1.save(item);
+       ItemRepo2.save(item);
+   }
 
     public List<Item> findBySellerId(Long userId) {
         List<Item> items = new ArrayList<>();

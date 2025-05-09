@@ -32,4 +32,28 @@ public class UserDTO {
     private String sellerAvatar;
 
     private double rating;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getSellerAvatar() {
+        return sellerAvatar;
+    }
+
+    public void setSellerAvatar(String sellerAvatar) {
+        this.sellerAvatar = sellerAvatar;
+    }
 }
