@@ -52,8 +52,8 @@ public class User {
     @Transient
     private List<Item> userListings;
 
-    @ElementCollection
-    private List<Integer> cardInfo = new ArrayList<>();
+//    @ElementCollection
+//    private List<Integer> cardInfo = new ArrayList<>();
 
 
     //@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
@@ -150,16 +150,20 @@ public class User {
         this.sellerAvatar = "default-avatar.png"; // Your default image file name or URL
     }
 
-    public List<Integer> getCardInfo() {
-        return cardInfo;
-    }
+//    public List<Integer> getCardInfo() {
+//        return cardInfo;
+//    }
 
-    public void setCardInfo(List<Integer> cardInfo) {
-        this.cardInfo = cardInfo;
-    }
+//    public void setCardInfo(List<Integer> cardInfo) {
+//        this.cardInfo = cardInfo;
+//    }
+
+
     public void setName(String name) {
         this.name = name;
     }
+
+
     //    public Vector<Integer> getCardInfo() {
 //        return cardInfo;
 //    }
