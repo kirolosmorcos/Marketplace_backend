@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,18 +37,20 @@ public class ItemController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(itemDTO1);
 //
 //    }
-@PostMapping("/add/{userId}")
-public ResponseEntity<ItemDTO> createItem(@PathVariable Long userId, @RequestBody @Valid ItemDTO itemDTO) {
+    @PostMapping("/add/{userId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<ItemDTO> createItem(@PathVariable Long userId, @RequestBody @Valid ItemDTO itemDTO) {
 
-    ItemDTO savedItemDTO = itemService.createItemForUser(itemDTO, userId);
+        ItemDTO savedItemDTO = itemService.createItemForUser(itemDTO, userId);
 
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedItemDTO);
-}
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedItemDTO);
+    }
 
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<ItemDTO>> getAllItems() {
         List<Item> items = itemService.findAllWithSpecifications();
         List<ItemDTO>itemsDTO=new ArrayList<>();
@@ -58,6 +61,7 @@ public ResponseEntity<ItemDTO> createItem(@PathVariable Long userId, @RequestBod
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {
         Optional<Item> itemOptional = itemService.findById(id);
         Optional<ItemDTO> itemDTOOptional = itemOptional.map(itemService::mapToItemDTO);
@@ -67,16 +71,20 @@ public ResponseEntity<ItemDTO> createItem(@PathVariable Long userId, @RequestBod
     }
 
     @PostMapping("/hi")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public String logout() {
         return "Logout successful!";
     }
 
     @GetMapping("/{userId}/items")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<UserItemDTO>> getUserItems(@PathVariable int userId) {
         List<UserItemDTO> items = itemService.getItemsByUser(userId);
         return ResponseEntity.ok(items);
     }
+
     @GetMapping("/statistics/{userId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ItemStatisticDTO getItemStatistics(@PathVariable Long userId) {
         // Get the item statistics for the user
         return itemService.getItemStatisticsForUser(userId);

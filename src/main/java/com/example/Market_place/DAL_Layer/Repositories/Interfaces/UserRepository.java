@@ -43,6 +43,11 @@ public class UserRepository {
         return allUsers;
     }
 
+    public Optional<User> findByUsername(String username) {
+        Optional<User> user1 = UserRepo1.findByUsername(username);
+        Optional<User> user2 = UserRepo2.findByUsername(username);
+        return user1.isPresent() ? user1 : user2;
+    }
 
 
 

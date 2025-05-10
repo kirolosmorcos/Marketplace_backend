@@ -40,4 +40,8 @@ public class UserService implements IUserService {
          return userRepo.UpdateUser(user);
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }

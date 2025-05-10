@@ -6,9 +6,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 @Entity
 @Table(name = "users")
@@ -44,8 +52,8 @@ public class User {
     @Transient
     private List<Item> userListings;
 
-//    @ElementCollection
-//    private Vector<Integer> cardInfo;
+    @ElementCollection
+    private List<Integer> cardInfo = new ArrayList<>();
 
 
     //@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)// Foreign key in Item table
@@ -62,6 +70,10 @@ public class User {
     }
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {
@@ -82,10 +94,6 @@ public class User {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -142,6 +150,13 @@ public class User {
         this.sellerAvatar = "default-avatar.png"; // Your default image file name or URL
     }
 
+    public List<Integer> getCardInfo() {
+        return cardInfo;
+    }
+
+    public void setCardInfo(List<Integer> cardInfo) {
+        this.cardInfo = cardInfo;
+    }
     public void setName(String name) {
         this.name = name;
     }
