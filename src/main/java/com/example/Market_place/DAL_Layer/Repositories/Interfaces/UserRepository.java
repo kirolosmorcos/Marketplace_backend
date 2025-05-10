@@ -63,4 +63,14 @@ int cnt=1;
             UserRepo2.deleteById(id);
         }
     }
+    public void UpdateUser(User user){
+        User one = UserRepo1.findById(user.getId()).orElse(null);
+        User two = UserRepo2.findById(user.getId()).orElse(null);
+        if (one != null ) {
+            UserRepo1.save(user);
+        }
+        if (two != null ) {
+            UserRepo2.save(user);
+        }
+    }
 }

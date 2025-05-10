@@ -14,6 +14,7 @@ public class UserDTO {
 
     private String name;
 
+   private double balance;
 
 
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
@@ -22,6 +23,12 @@ public class UserDTO {
     private String sellerAvatar;
 
     private double rating;
+    public double getBalance() {
+        return balance;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
     public String getName() {
         return name;

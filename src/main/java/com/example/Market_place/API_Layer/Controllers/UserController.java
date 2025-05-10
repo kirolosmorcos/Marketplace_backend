@@ -34,6 +34,7 @@ public class UserController {
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getEmail());
         user.setRole(RoleName.ROLE_USER);
+        user.setBalance(0.0);
 
         User savedUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
@@ -56,10 +57,7 @@ public class UserController {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/login")
-    public String login() {
-        return "Login successful!";
-    }
+
 
     @PostMapping("/hi")
     public String logout() {
@@ -81,10 +79,26 @@ public class UserController {
         existingUser.setSellerAvatar(userDTO.getSellerAvatar());
         existingUser.setRating(userDTO.getRating());
 
+        existingUser.setBalance(userDTO.getBalance());
+
 
         User updatedUser = userService.save(existingUser);
         return ResponseEntity.ok(updatedUser);
     }
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login() {
+        // You can log or check credentials here if needed
 
+        // Return a default user with ID 1
+        UserDTO defaultUser = new UserDTO();
+        defaultUser.setEmail("john@example.com");
+        defaultUser.setPassword("hidden"); // don't expose real passwords
+        defaultUser.setName("John Doe");
+        defaultUser.setPhone("0123456789");
+        defaultUser.setSellerAvatar("avatar.jpg");
+        defaultUser.setRating(4.5);
+
+        return ResponseEntity.ok(defaultUser);
+}
 
 }

@@ -56,6 +56,14 @@ public class User {
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
     private RoleName role;  // The role field that will store the user's role
 
+    private double balance;
+    public double getBalance() {
+        return balance;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public Long getId() {
         return id;
     }

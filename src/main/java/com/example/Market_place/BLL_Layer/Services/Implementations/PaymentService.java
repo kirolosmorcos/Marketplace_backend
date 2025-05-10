@@ -20,6 +20,7 @@ public class PaymentService implements IPaymentService {
         Optional<User> buyerOpt = userRepository.findById(dto.getBuyerId());
         Optional<User> sellerOpt = userRepository.findById(dto.getSellerId());
 
+
         if (buyerOpt.isEmpty() || sellerOpt.isEmpty()) {
             return "Buyer or Seller not found.";
         }
@@ -27,18 +28,22 @@ public class PaymentService implements IPaymentService {
         User buyer = buyerOpt.get();
         User seller = sellerOpt.get();
 
-//        if (buyer.getBalance() < dto.getAmount()) {
-//            return "Insufficient balance.";
-//        }
-//
-//        buyer.setBalance(buyer.getBalance() - dto.getAmount());
-//        seller.setBalance(seller.getBalance() + dto.getAmount());
-//
-//        userRepository.save(buyer);
-//        userRepository.save(seller);
-//
-//        return "Transaction succeeded! Buyer balance: " + buyer.getBalance() +
-//                ", Seller balance: " + seller.getBalance();
-        return "done " ;
+//handling the balance of users
+        if (buyer.getBalance() < dto.getAmount()) {
+            return "Insufficient balance.";
+        }
+
+        buyer.setBalance(buyer.getBalance() - dto.getAmount());
+        seller.setBalance(seller.getBalance() + dto.getAmount());
+
+        userRepository.UpdateUser(buyer);
+        userRepository.UpdateUser(seller);
+
+        //handle order
+
+
+        return "Transaction succeeded! Buyer balance: " + buyer.getBalance() +
+                ", Seller balance: " + seller.getBalance();
+
     }
 }
