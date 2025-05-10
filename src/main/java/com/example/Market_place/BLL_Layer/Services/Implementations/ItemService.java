@@ -159,7 +159,10 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         item.setDescription(itemDTO.getDescription());
         item.setRating(itemDTO.getRating());
         item.setStatus(itemDTO.getStatus());
-       // item.setSeller(user);
+        item.setCategory(itemDTO.getCategory());
+
+        User user = userRepository.findById(itemDTO.getSellerId()).orElse(null);
+        item.setSeller(user);
 
 
         List<Specification> specs = new ArrayList<>();
@@ -188,7 +191,11 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         dto.setDescription(item.getDescription());
         dto.setRating(item.getRating());
         dto.setStatus(item.getStatus());
-        //dto.setUserId(item.getSeller().getId());
+        dto.setCategory(item.getCategory());
+        //dto.setUserId(item.getSellerId());
+        User user = userRepository.findById(item.getSellerId()).orElse(null);
+        dto.setSellerAvatar(user.getSellerAvatar());
+        dto.setSellerName(user.getUsername());
 
 
         List<SpecificationDTO> specDTOs = new ArrayList<>();

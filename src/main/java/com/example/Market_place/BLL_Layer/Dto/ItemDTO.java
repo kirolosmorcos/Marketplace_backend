@@ -82,6 +82,10 @@ public class ItemDTO {
     }
 
     private String title;
+    private Long sellerId;
+    private String sellerName;
+    private String sellerAvatar;
+    private String category;
     private double price;
     private String image;
     private int quantity;
@@ -89,4 +93,13 @@ public class ItemDTO {
     private double rating;
     private String status;
     private List<SpecificationDTO> specifications;
+
+    public void setCategory(String category) { this.category = category;}
+
+    public void setUserId(Long sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public void setSellerName(String sellerName) { this.sellerName= sellerName; }
+    public void setSellerAvatar(String sellerAvatar) { this.sellerAvatar= sellerAvatar; }
 }

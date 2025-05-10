@@ -123,6 +123,9 @@ public class User {
     public void setUserListings(List<Item> userListings) {
         this.userListings = userListings;
     }
+    public User() {
+        this.sellerAvatar = "default-avatar.png"; // Your default image file name or URL
+    }
 
     //    public Vector<Integer> getCardInfo() {
 //        return cardInfo;
