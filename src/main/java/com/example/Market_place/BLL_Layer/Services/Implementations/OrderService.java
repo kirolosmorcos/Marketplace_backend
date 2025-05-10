@@ -50,7 +50,7 @@ public class OrderService implements IBaseService<Order,Long> {
 
         for(Long itemId:createOrderDTO.getItemIds()){
             Item item =itemRepo.findById(itemId).get();
-            item.setQuantity(item.getQuantity()-1);
+           // item.setQuantity(item.getQuantity()-1);
 
             item.setOrder(order);
             item.setOrderId(order.getOrderId());
@@ -63,7 +63,7 @@ public class OrderService implements IBaseService<Order,Long> {
             order.setTotalPrice(order.getTotalPrice()+item.getPrice());
         }
         order.setItems(items);
-
+        orderRepo.updateOrder(order);
         return mapToOrderDTO(order);
     }
 

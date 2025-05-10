@@ -1,6 +1,8 @@
 package com.example.Market_place.BLL_Layer.Dto;
 
 
+import java.time.LocalDate;
+
 public class PaymentDTO {
 
 
@@ -13,12 +15,16 @@ public class PaymentDTO {
 
 
 
+
+
     public Long getOrderId() {
         return orderId;
     }
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
+
+
 
 
     // Getters and setters

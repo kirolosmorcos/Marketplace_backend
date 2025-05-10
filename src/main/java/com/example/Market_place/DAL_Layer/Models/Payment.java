@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @Entity
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long paymentId;
 
-    private int amount;
+    private Double amount;
     private Long buyerId;
     private Long sellerId;
     private Long orderId;
@@ -65,10 +65,10 @@ public class Payment {
         this.paymentId = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
     public LocalDate getDate() {

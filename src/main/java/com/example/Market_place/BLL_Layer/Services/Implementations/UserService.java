@@ -36,5 +36,8 @@ public class UserService implements IUserService {
     public void deleteById(Long id) {
          userRepo.deleteById(id);
     }
+    public User updateUser(User user){
+         return userRepo.UpdateUser(user);
+    }
 
 }

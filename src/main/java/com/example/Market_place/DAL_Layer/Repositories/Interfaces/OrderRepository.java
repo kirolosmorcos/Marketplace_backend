@@ -143,4 +143,17 @@ public class OrderRepository{
 
         return Math.max(maxId1, maxId2) + 1;
     }
-}
+    public Order updateOrder(Order order) {
+
+        Order one = OrderRepo1.findById(order.getOrderId()).orElse(null);
+        Order two = OrderRepo2.findById(order.getOrderId()).orElse(null);
+        Order savedOrder=null;
+        if (one != null) {
+            savedOrder = OrderRepo1.save(order);
+        }
+        if (two != null) {
+            savedOrder = OrderRepo2.save(order);
+        }
+        return savedOrder;
+        }
+    }

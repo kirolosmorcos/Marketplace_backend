@@ -57,7 +57,15 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
     }
     @Override
     public List<Item> findAllWithSpecifications() {
-        return itemRepo.findAllWithSpecifications();
+
+        List<Item>items= itemRepo.findAllWithSpecifications();
+        List<Item>filteredItems=new ArrayList<>();
+        for(Item item:items){
+           if(item.getStatus().equalsIgnoreCase("available")){
+               filteredItems.add(item);
+           }
+        }
+        return filteredItems;
     }
 
 //    public List<UserItemDTO> getItemsByUser(int userId) {
@@ -104,30 +112,26 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         List<Item> items = itemRepo.findBySellerId(userId); // Assuming you have a method in ItemRepository to find items by seller ID
 
         // Calculate statistics
-        long totalItems = items.stream()
-                .mapToLong(Item::getQuantity)  // Get the quantity for each item
-                .sum();
+        long totalItems =items.size();
+
 
         List<Order>orders=orderRepository.findByUserIdAndStatusWithItems(userId,"delivered");
         Long totalOrderItems=0L;
         for(Order order:orders){
-            List<Item> Orderitems =order.getItems();
 
-            for(Item item:Orderitems){
-                totalOrderItems+=item.getQuantity();
-            }
+
+          totalOrderItems+=order.getItems().size();
 
 
         }
         long soldItems = items.stream()
-                .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
-                .mapToLong(item -> item.getQuantity())  // Map to the quantity of each sold item
-                .sum();  // Sum up the quantities to get the total number of sold items
+                .filter(item -> "sold".equalsIgnoreCase(item.getStatus())) .count() // Filter only the sold items
+                ; // Sum up the quantities to get the total number of sold items
 
 // Calculate total money, including quantity
         double totalMoney = items.stream()
                 .filter(item -> "sold".equalsIgnoreCase(item.getStatus()))  // Filter only the sold items
-                .mapToDouble(item -> item.getPrice() * item.getQuantity())  // Multiply the price by the quantity for each sold item
+                .mapToDouble(item -> item.getPrice() )  // Multiply the price by the quantity for each sold item
                 .sum();  // Sum up the total money for all sold items
 
 //        long soldItems = items.stream()
@@ -161,11 +165,12 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         item.setStatus(itemDTO.getStatus());
         item.setCategory(itemDTO.getCategory());
 
-        User user = userRepository.findById(itemDTO.getSellerId()).orElse(null);
-        item.setSeller(user);
+//        User user = userRepository.findById(itemDTO.getSellerId()).orElse(null);
+//        item.setSeller(user);
 
 
         List<Specification> specs = new ArrayList<>();
+        if(itemDTO.getSpecifications()!=null )
         for (SpecificationDTO dto : itemDTO.getSpecifications()) {
             Specification spec = new Specification();
             spec.setLabel(dto.getLabel());
@@ -199,6 +204,7 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
 
 
         List<SpecificationDTO> specDTOs = new ArrayList<>();
+        if(item.getSpecifications()!=null)
         for (Specification spec : item.getSpecifications()) {
             SpecificationDTO specDTO = new SpecificationDTO();
             specDTO.setLabel(spec.getLabel());

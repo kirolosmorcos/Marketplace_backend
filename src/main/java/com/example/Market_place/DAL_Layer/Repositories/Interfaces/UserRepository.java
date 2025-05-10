@@ -74,4 +74,17 @@ public class UserRepository {
 
         return Math.max(maxId1, maxId2) + 1;
     }
+    public User UpdateUser(User user){
+
+          User one = UserRepo1.findById(user.getId()).orElse(null);
+          User two = UserRepo2.findById(user.getId()).orElse(null);
+          User savedUser=null;
+          if (one != null ) {
+              savedUser=UserRepo1.save(user);
+          }
+          if (two != null ) {
+              savedUser=UserRepo2.save(user);
+          }
+          return savedUser;
+    }
 }

@@ -3,9 +3,11 @@ package com.example.Market_place.API_Layer.Controllers;
 import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.BLL_Layer.Services.Implementations.UserService;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
 import com.example.Market_place.DAL_Layer.enums.RoleName;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-//    @PostMapping("/register")
+
+   //    @PostMapping("/register")
 //    public ResponseEntity<String> register(@RequestBody UserDTO userDto) {
 //        // logic to register user
 //        return ResponseEntity.ok("User registered");
@@ -33,6 +36,7 @@ public class UserController {
         User user = new User();
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getEmail());
+        user.setName(userDTO.getName());
         user.setRole(RoleName.ROLE_USER);
         user.setBalance(0.0);
 
@@ -77,16 +81,31 @@ public class UserController {
         }
 
         User existingUser = optionalUser.get();
+        if(userDTO.getEmail()!=null)
         existingUser.setUsername(userDTO.getEmail());
+
+        if(userDTO.getPassword()!=null)
         existingUser.setPassword(userDTO.getPassword());
+
+        if(userDTO.getPhone()!=null)
         existingUser.setPhone(userDTO.getPhone());
+
+        if(userDTO.getSellerAvatar()!=null)
         existingUser.setSellerAvatar(userDTO.getSellerAvatar());
-        existingUser.setRating(userDTO.getRating());
+
+        if( userDTO.getName()!=null)
+        existingUser.setName(userDTO.getName());
+
+        if(userDTO.getBalance()!=0)
+        existingUser.setBalance(userDTO.getBalance());
+
+        if(userDTO.getRating()!=0)
+            existingUser.setRating(userDTO.getRating());
 
         //existingUser.setBalance(userDTO.getBalance());
 
 
-        User updatedUser = userService.save(existingUser);
+        User updatedUser = userService.updateUser(existingUser);
         return ResponseEntity.ok(updatedUser);
     }
     @PostMapping("/login")

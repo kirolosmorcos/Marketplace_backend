@@ -4,7 +4,10 @@ import com.example.Market_place.BLL_Layer.Dto.PaymentDTO;
 import com.example.Market_place.BLL_Layer.Services.Interfaces.IPaymentService;
 import com.example.Market_place.DAL_Layer.Models.Item;
 import com.example.Market_place.DAL_Layer.Models.Order;
+
+import com.example.Market_place.DAL_Layer.Models.Payment;
 import com.example.Market_place.DAL_Layer.Models.User;
+import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.PaymentRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +30,8 @@ public class PaymentService implements IPaymentService {
     private OrderRepository orderRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
 
     @Override
@@ -58,6 +64,15 @@ public class PaymentService implements IPaymentService {
             userRepository.UpdateUser(buyer);
             userRepository.UpdateUser(seller);
 
+             Payment payment=new Payment();
+             payment.setBuyerId(buyer.getId());
+             payment.setSellerId(seller.getId());
+             payment.setAmount(item.getPrice());
+             payment.setOrderId(order.getOrderId());
+             payment.setDate(LocalDate.now());
+
+             paymentRepository.save(payment);
+
         }
 
 
@@ -69,7 +84,9 @@ public class PaymentService implements IPaymentService {
        order.setStatus("delivered");
         for(Item item:order.getItems()){
             item.setStatus("sold");
+            itemRepository.UpdateItem(item);
         }
+        orderRepository.updateOrder(order);
         return "Transaction succeeded! ";
 
     }

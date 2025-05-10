@@ -23,7 +23,7 @@ public class PaymentRepository {
         //get order by payment id
         payment.setId(getNextId());
 
-        Order order = OrderRepo.getOrderbyPaymentId( payment.getId());
+
         if (payment.getId()% 2 == 0) {
             return PaymentRepo1.save(payment);  // Even ID → DB1
         } else {
