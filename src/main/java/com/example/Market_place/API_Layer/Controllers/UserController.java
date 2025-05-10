@@ -79,13 +79,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> getAllUsers() {
@@ -99,14 +92,21 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PostMapping("/hi")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public String logout() {
         return "Logout successful!";
     }
 
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<User> getUser(@PathVariable Long id) {
+//        Optional<User> user = userService.findById(id);
+//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
         Optional<User> optionalUser = userService.findById(id);
 
@@ -116,22 +116,22 @@ public class UserController {
 
         User existingUser = optionalUser.get();
         if(userDTO.getEmail()!=null)
-        existingUser.setUsername(userDTO.getEmail());
+            existingUser.setUsername(userDTO.getEmail());
 
         if(userDTO.getPassword()!=null)
-        existingUser.setPassword(userDTO.getPassword());
+            existingUser.setPassword(userDTO.getPassword());
 
         if(userDTO.getPhone()!=null)
-        existingUser.setPhone(userDTO.getPhone());
+            existingUser.setPhone(userDTO.getPhone());
 
         if(userDTO.getSellerAvatar()!=null)
-        existingUser.setSellerAvatar(userDTO.getSellerAvatar());
+            existingUser.setSellerAvatar(userDTO.getSellerAvatar());
 
         if( userDTO.getName()!=null)
-        existingUser.setName(userDTO.getName());
+            existingUser.setName(userDTO.getName());
 
         if(userDTO.getBalance()!=0)
-        existingUser.setBalance(userDTO.getBalance());
+            existingUser.setBalance(userDTO.getBalance());
 
         if(userDTO.getRating()!=0)
             existingUser.setRating(userDTO.getRating());
@@ -161,21 +161,21 @@ public class UserController {
 //
 //        User user=userService.findById(1L).get();
 //
-//       UserDTO userDTO=new UserDTO();
-//       userDTO.setEmail(user.getUsername());
-//      // userDTO.setPassword(user.getPassword());
+//        UserDTO userDTO=new UserDTO();
+//        userDTO.setEmail(user.getUsername());
+//        // userDTO.setPassword(user.getPassword());
 //        userDTO.setId(user.getId());
 //
 //
-//       userDTO.setName(defaultUser.getName());
-//       userDTO.setPhone(defaultUser.getPhone());
-//       userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
-//       userDTO.setRating(defaultUser.getRating());
-//       userDTO.setBalance(defaultUser.getBalance());
+//        userDTO.setName(defaultUser.getName());
+//        userDTO.setPhone(defaultUser.getPhone());
+//        userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
+//        userDTO.setRating(defaultUser.getRating());
+//        userDTO.setBalance(defaultUser.getBalance());
 //
 //
 //
 //        return ResponseEntity.ok(userDTO);
-//}
+//    }
 
 }
