@@ -1,5 +1,6 @@
 package com.example.Market_place.API_Layer.Controllers;
 
+import com.example.Market_place.BLL_Layer.Dto.LoginReturnDTO;
 import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.BLL_Layer.Services.Implementations.UserService;
@@ -7,6 +8,8 @@ import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository
 import com.example.Market_place.DAL_Layer.enums.RoleName;
 import com.example.Market_place.Security.service.JwtService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -62,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDto) {
+    public ResponseEntity<LoginReturnDTO> login(@RequestBody UserDTO userDto) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
@@ -71,11 +74,23 @@ public class UserController {
             // Authentication successful → fetch user + generate JWT
             User user = userService.findByUsername(userDto.getEmail()).orElseThrow();
             String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
-            return ResponseEntity.ok(token);
+            LoginReturnDTO loginReturnDTO = new LoginReturnDTO() ;
+            loginReturnDTO.setToken((token));
+            UserDTO userDTO = new UserDTO();
+            userDTO.setEmail(user.getUsername());
+            // userDTO.setPassword(user.getPassword());
+            userDTO.setId(user.getId());
+            userDTO.setName(user.getName());
+            userDTO.setPhone(user.getPhone());
+            userDTO.setSellerAvatar(user.getSellerAvatar());
+            userDTO.setRating(user.getRating());
+            userDTO.setBalance(user.getBalance());
+            loginReturnDTO.setUser(userDTO);
+            return ResponseEntity.ok(loginReturnDTO);
         } catch (AuthenticationException e) {
             // System.out.println("[LOGIN] Authentication failed: " + e.getMessage());
             // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginReturnDTO());
         }
     }
 

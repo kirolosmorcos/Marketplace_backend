@@ -16,7 +16,9 @@ public class WebConfig {
                 registry.addMapping("/**") // apply to all endpoints
                         .allowedOrigins("http://localhost:8080")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+
             }
         };
     }
