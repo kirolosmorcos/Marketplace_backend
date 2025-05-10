@@ -81,12 +81,19 @@ public class OrderRepository{
         }
     }
     public Order findByIdWithItems(Long id){
-        Optional<Order> order = OrderRepo1.findById(id);
-        if (order.isPresent()) {
-            return order.get();
-        }
-        Optional<Order> order2 = OrderRepo2.findById(id);
-        return order2.get();
+        Order order =findById(id).orElseThrow(EntityNotFoundException::new);
+
+
+
+            List<Item> items=new ArrayList<>();
+            items.addAll(itemRepo.findByOrderId(order.getOrderId()));
+            for(Item item:items)
+            {
+                item.setSeller(UserRepo.findById(item.getSellerId()).orElseThrow(EntityNotFoundException::new));
+            }
+            order.setItems(items);
+            return order;
+
     }
    // public Order
 
