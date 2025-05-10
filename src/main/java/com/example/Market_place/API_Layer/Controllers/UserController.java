@@ -79,7 +79,7 @@ public class UserController {
         existingUser.setSellerAvatar(userDTO.getSellerAvatar());
         existingUser.setRating(userDTO.getRating());
 
-        existingUser.setBalance(userDTO.getBalance());
+        //existingUser.setBalance(userDTO.getBalance());
 
 
         User updatedUser = userService.save(existingUser);
