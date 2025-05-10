@@ -12,6 +12,7 @@ import com.example.Market_place.DAL_Layer.Repositories.Interfaces.ItemRepository
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.SpecificationRepository;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +78,8 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         // Map the Item objects to UserItemDTO
         return items.stream().map(this::mapToUserItemDTO).collect(Collectors.toList());
     }
+
+    // @Transactional
     public ItemDTO createItemForUser(ItemDTO itemDTO, Long userId) {
         // Retrieve the user by userId
         Optional<User> userOptional = userRepository.findById(userId);
@@ -163,15 +166,17 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
 
 
         List<Specification> specs = new ArrayList<>();
-        for (SpecificationDTO dto : itemDTO.getSpecifications()) {
-            Specification spec = new Specification();
-            spec.setLabel(dto.getLabel());
-            spec.setSpecValue(dto.getValue());
-            // added attribute
-            spec.setItem(item);// IMPORTANT: set back-reference
-            spec.setItemId(item.getId());
+        if(itemDTO.getSpecifications() != null) {
+            for (SpecificationDTO dto : itemDTO.getSpecifications()) {
+                Specification spec = new Specification();
+                spec.setLabel(dto.getLabel());
+                spec.setSpecValue(dto.getValue());
+                // added attribute
+                spec.setItem(item);// IMPORTANT: set back-reference
+                spec.setItemId(item.getId());
 
-            specs.add(spec);
+                specs.add(spec);
+            }
         }
 
         item.setSpecifications(specs);
@@ -188,15 +193,17 @@ public class ItemService implements com.example.Market_place.BLL_Layer.Services.
         dto.setDescription(item.getDescription());
         dto.setRating(item.getRating());
         dto.setStatus(item.getStatus());
-        //dto.setUserId(item.getSeller().getId());
+//        dto.setUserId(item.getSeller().getId());
 
 
         List<SpecificationDTO> specDTOs = new ArrayList<>();
-        for (Specification spec : item.getSpecifications()) {
-            SpecificationDTO specDTO = new SpecificationDTO();
-            specDTO.setLabel(spec.getLabel());
-            specDTO.setValue(spec.getSpecValue());
-            specDTOs.add(specDTO);
+        if(item.getSpecifications() != null) {
+            for (Specification spec : item.getSpecifications()) {
+                SpecificationDTO specDTO = new SpecificationDTO();
+                specDTO.setLabel(spec.getLabel());
+                specDTO.setValue(spec.getSpecValue());
+                specDTOs.add(specDTO);
+            }
         }
 
         dto.setSpecifications(specDTOs);
