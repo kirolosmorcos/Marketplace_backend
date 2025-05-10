@@ -41,11 +41,15 @@ public class UserController {
       //  return ResponseEntity.ok("Registered!");
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+//        Optional<User> user = userService.findById(id);
+//        UserDTO userDTO=new UserDTO();
+//        userDTO.setEmail(user.get().getUsername());
+//        userDTO.setPassword(user.get().getPassword());
+//        userDTO.setName(user.get().getName());
+//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -86,19 +90,37 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login() {
+    public ResponseEntity<UserDTO> login(UserDTO userDt) {
         // You can log or check credentials here if needed
 
         // Return a default user with ID 1
-        UserDTO defaultUser = new UserDTO();
-        defaultUser.setEmail("john@example.com");
+        User defaultUser = new User();
+        defaultUser.setUsername("john@example.com");
         defaultUser.setPassword("hidden"); // don't expose real passwords
         defaultUser.setName("John Doe");
         defaultUser.setPhone("0123456789");
         defaultUser.setSellerAvatar("avatar.jpg");
         defaultUser.setRating(4.5);
+        defaultUser.setBalance(1000.0);
 
-        return ResponseEntity.ok(defaultUser);
+
+        User user=userService.findById(1L).get();
+
+       UserDTO userDTO=new UserDTO();
+       userDTO.setEmail(user.getUsername());
+      // userDTO.setPassword(user.getPassword());
+        userDTO.setId(user.getId());
+
+
+       userDTO.setName(defaultUser.getName());
+       userDTO.setPhone(defaultUser.getPhone());
+       userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
+       userDTO.setRating(defaultUser.getRating());
+       userDTO.setBalance(defaultUser.getBalance());
+
+
+
+        return ResponseEntity.ok(userDTO);
 }
 
 }

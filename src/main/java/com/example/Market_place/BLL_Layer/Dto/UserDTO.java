@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserDTO {
+    private Long id;
+
 
     private String email;
 
@@ -23,6 +25,14 @@ public class UserDTO {
     private String sellerAvatar;
 
     private double rating;
+
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public double getBalance() {
         return balance;
     }

@@ -80,6 +80,15 @@ public class OrderRepository{
             OrderRepo2.deleteById(id);
         }
     }
+    public Order findByIdWithItems(Long id){
+        Optional<Order> order = OrderRepo1.findById(id);
+        if (order.isPresent()) {
+            return order.get();
+        }
+        Optional<Order> order2 = OrderRepo2.findById(id);
+        return order2.get();
+    }
+   // public Order
 
    public List<Order> findByUserIdAndStatusWithItems( Long userId,  String status) {//need implementation with join
        List<Order> allOrders = new ArrayList<>();

@@ -49,6 +49,6 @@ public class PaymentService implements IPaymentService {
 //
 //        return "Transaction succeeded! Buyer balance: " + buyer.getBalance() +
 //                ", Seller balance: " + seller.getBalance();
-  return "Transaction succeeded!";
+    return null;
     }
 }
