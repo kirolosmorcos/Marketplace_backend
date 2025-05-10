@@ -22,11 +22,12 @@ public class UserRepository {
     private UserRepositoryDB1 UserRepo1;
 @Autowired
     private UserRepositoryDB2 UserRepo2;
-int cnt=1;
+    int cnt=0;
     //@PostMapping
     public User save( User user) {
+        user.setId(getNextId());
 
-        if (cnt++ %2==0) {
+        if (user.getId() % 2 == 0) {
             return UserRepo1.save(user);
         } else {
             return UserRepo2.save(user);
@@ -63,14 +64,14 @@ int cnt=1;
             UserRepo2.deleteById(id);
         }
     }
-    public void UpdateUser(User user){
-        User one = UserRepo1.findById(user.getId()).orElse(null);
-        User two = UserRepo2.findById(user.getId()).orElse(null);
-        if (one != null ) {
-            UserRepo1.save(user);
-        }
-        if (two != null ) {
-            UserRepo2.save(user);
-        }
+
+    public Long getNextId() {
+        Long maxId1 = UserRepo1.findMaxId();
+        Long maxId2 = UserRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
     }
 }

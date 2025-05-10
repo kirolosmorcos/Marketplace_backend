@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.example.Market_place.DAL_Layer.Repositories")
-@EntityScan(basePackages = "com.example.Market_place.Models")
+@EntityScan(basePackages = "com.example.Market_place.DAL_Layer.Models")
 //@ComponentScan(basePackages = "com.example.Market_place")
 public class MarketPlaceApplication {
 

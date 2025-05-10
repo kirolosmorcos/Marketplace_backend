@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 public class Specification {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
     private String label;
     private String specValue;
 
@@ -28,11 +28,11 @@ public class Specification {
         this.item = item;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -13,4 +13,7 @@ public interface ItemRepositoryDB2 extends IBaseRepo<Item,Long> {
 //    List<Item> findAllWithSpecifications();
     List<Item> findBySellerId(Long sellerId);
     List<Item> findByOrderId(Long categoryId);
+
+    @Query("SELECT MAX(i.id) FROM Item i ")
+    Long findMaxId();
 }

@@ -12,5 +12,11 @@ public interface ItemRepositoryDB1 extends IBaseRepo<Item,Long> {
 //    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.specifications")
    // List<Item> findAllWithSpecifications();
     List<Item> findBySellerId(Long sellerId);
+
     List<Item> findByOrderId(Long categoryId);
+
+
+    @Query("SELECT MAX(i.id) FROM Item i ")
+    Long findMaxId();
+
 }

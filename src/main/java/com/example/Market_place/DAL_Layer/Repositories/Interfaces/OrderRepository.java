@@ -30,13 +30,13 @@ public class OrderRepository{
     @Autowired
     private ItemRepository itemRepo;
 
-    int cnt=1;
-    public Order save(Order order) {
-
-       if(cnt++ %2==0){
+   public Order save(Order order) {
+       order.setOrderId(getNextId());
+       if(order.getOrderId() % 2 == 0){
            return  OrderRepo1.save(order);
        }
-       return  OrderRepo2.save(order);
+       else
+           return  OrderRepo2.save(order);
    }
 
 //TODO: check id before saving
@@ -133,14 +133,14 @@ public class OrderRepository{
        return order2.get();
 
    }
-//    public void UpdateOrder(Order order ){//need implementation
-//       Order one = OrderRepo1.findById(order.getOrderId()).orElse(null);
-//        Order two = OrderRepo2.findById(order.getOrderId()).orElse(null);
-//        if (one != null) {
-//           OrderRepo1.save(order);
-//        }
-//        if (two != null) {
-//            OrderRepo2.save(order);
-//        }
-//    }
+
+    public Long getNextId() {
+        Long maxId1 = OrderRepo1.findMaxId();
+        Long maxId2 = OrderRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
+    }
 }

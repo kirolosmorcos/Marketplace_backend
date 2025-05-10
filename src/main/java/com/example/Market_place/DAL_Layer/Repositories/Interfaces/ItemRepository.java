@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ItemRepository {
+public class ItemRepository{
+    //add static variabl for id instead of quering every time
+
     @Autowired
     private ItemRepositoryDB1 ItemRepo1;
 
@@ -24,15 +26,18 @@ public class ItemRepository {
 
     @Autowired
     private SpecificationRepository SpecRepo;
-    int cnt=1;
+
     public Item save(Item item) {
+        item.setId(getNextId());
+
+
         List<Specification>specs=item.getSpecifications();
         for(Specification spec:specs)
         {
             spec.setItemId(item.getId());
             SpecRepo.save(spec);
         }
-        if (cnt++ %2==0) {
+        if (item.getId() % 2 == 0) {
             return ItemRepo1.save(item);  // Even ID → DB1
         } else {
             return ItemRepo2.save(item);  // Odd ID → DB2
@@ -47,6 +52,7 @@ public class ItemRepository {
         allItems.addAll(ItemRepo2.findAll());
         return allItems;
     }
+
 
 
     //@GetMapping("/{id}")
@@ -108,5 +114,15 @@ public class ItemRepository {
         items.addAll(ItemRepo2.findByOrderId(orderId));
         return items;
     }
-}
 
+    public Long getNextId() {
+        Long maxId1 = ItemRepo1.findMaxId();
+        Long maxId2 = ItemRepo2.findMaxId();
+
+        maxId1 = (maxId1 == null) ? 0L : maxId1;
+        maxId2 = (maxId2 == null) ? 0L : maxId2;
+
+        return Math.max(maxId1, maxId2) + 1;
+    }
+
+}
