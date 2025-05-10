@@ -21,6 +21,10 @@ public class User {
     @Email(message = "Invalid email format")
     private String username;
 
+    private String name;
+
+
+
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
@@ -119,6 +123,9 @@ public class User {
     public List<Item> getUserListings() {
         return userListings;
     }
+    public String getName() {
+        return name;
+    }
 
     public void setUserListings(List<Item> userListings) {
         this.userListings = userListings;
@@ -127,6 +134,9 @@ public class User {
         this.sellerAvatar = "default-avatar.png"; // Your default image file name or URL
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
     //    public Vector<Integer> getCardInfo() {
 //        return cardInfo;
 //    }

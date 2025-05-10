@@ -8,6 +8,20 @@ import java.util.List;
 @Getter
 public class ItemDTO {
     private Long id;
+    private String title;
+    private Long sellerId;
+    private String sellerName;
+    private String sellerAvatar;
+    private String category;
+    private double price;
+    private String image;
+    private int quantity;
+    private String description;
+    private double rating;
+    private String status;
+    private List<SpecificationDTO> specifications;
+
+
 
     public String getDescription() {
         return description;
@@ -81,20 +95,16 @@ public class ItemDTO {
         this.title = title;
     }
 
-    private String title;
-    private Long sellerId;
-    private String sellerName;
-    private String sellerAvatar;
-    private String category;
-    private double price;
-    private String image;
-    private int quantity;
-    private String description;
-    private double rating;
-    private String status;
-    private List<SpecificationDTO> specifications;
+
 
     public void setCategory(String category) { this.category = category;}
+    public String getCategory() { return category; }
+    public Long getSellerId() {
+        return sellerId;
+    }
+    public String getSellerName() { return sellerName; }
+    public String getSellerAvatar() { return sellerAvatar; }
+
 
     public void setUserId(Long sellerId) {
         this.sellerId = sellerId;

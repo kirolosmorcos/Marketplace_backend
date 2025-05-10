@@ -7,8 +7,28 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserDTO {
+
     private String email;
+
     private String password;
+
+    private String name;
+
+
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
+    private String phone;
+
+    private String sellerAvatar;
+
+    private double rating;
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getEmail() {
         return email;
@@ -25,14 +45,6 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
-
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
-    private String phone;
-
-    private String sellerAvatar;
-
-    private double rating;
-
     public String getPhone() {
         return phone;
     }
