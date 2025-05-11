@@ -89,8 +89,8 @@ public class UserRepository {
     }
     public User findByUsername(String username)
     {
-        User one = UserRepo1.findByUserName(username).orElse(null);
-        User two = UserRepo2.findByUserName(username).orElse(null);
+        User one = UserRepo1.findByUsername(username).orElse(null);
+        User two = UserRepo2.findByUsername(username).orElse(null);
         User savedUser=null;
         if (one != null ) {
             savedUser=one;

@@ -109,7 +109,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(UserDTO userDt) {
+    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDt) {
         // You can log or check credentials here if needed
 
         // Return a default user with ID 1
@@ -145,7 +145,7 @@ public class UserController {
         userDTO.setEmail(user.getUsername());
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
-
+        userDTO.setBalance(user.getBalance());
 
         return ResponseEntity.ok(userDTO);
 }
