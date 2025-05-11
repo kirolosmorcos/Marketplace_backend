@@ -3,7 +3,9 @@ package com.example.Market_place.API_Layer.Controllers;
 
 import com.example.Market_place.BLL_Layer.Dto.CreateOrderDTO;
 import com.example.Market_place.BLL_Layer.Dto.OrderDTO;
+import com.example.Market_place.BLL_Layer.Dto.PaymentDTO;
 import com.example.Market_place.BLL_Layer.Services.Implementations.OrderService;
+import com.example.Market_place.BLL_Layer.Services.Interfaces.IPaymentService;
 import com.example.Market_place.DAL_Layer.Models.Order;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,13 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/add")
-    public ResponseEntity<OrderDTO> addOrder(@RequestBody CreateOrderDTO createOrderDTO) {
+    public ResponseEntity<String>  addOrder(@RequestBody CreateOrderDTO createOrderDTO) {
 
         OrderDTO orderDTO = orderService.addOrder(createOrderDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
+        PaymentDTO paymentDTO=new PaymentDTO();
+        paymentDTO.setOrderId(orderDTO.getId());
+        String result = paymentService.processPayment(paymentDTO);
+        return ResponseEntity.ok(result+orderDTO.getId());
     }
 
     @GetMapping("/{userId}")
@@ -36,6 +41,16 @@ public class OrderController {
             orderDTOS.add(orderService.mapToOrderDTO(order));
         }
         return ResponseEntity.ok(orderDTOS);
+    }
+
+
+    @Autowired
+    private IPaymentService paymentService;
+
+
+    public ResponseEntity<String> processPayment(@RequestBody PaymentDTO paymentDTO) {
+        String result = paymentService.processPayment(paymentDTO);
+        return ResponseEntity.ok(result);
     }
 }
 
