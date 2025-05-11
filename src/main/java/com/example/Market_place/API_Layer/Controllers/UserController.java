@@ -84,7 +84,6 @@ public class UserController {
             loginReturnDTO.setToken((token));
             UserDTO userDTO = new UserDTO();
             userDTO.setEmail(user.getUsername());
-            // userDTO.setPassword(user.getPassword());
             userDTO.setId(user.getId());
             userDTO.setName(user.getName());
             userDTO.setPhone(user.getPhone());
@@ -209,18 +208,5 @@ public class UserController {
 //       userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
 //       userDTO.setRating(defaultUser.getRating());
 //       userDTO.setBalance(defaultUser.getBalance());
-
-        User user = userService.findUserByUserName(userDt);
-        if(user==null){
-            return ResponseEntity.notFound().build();
-        }
-        UserDTO userDTO=new UserDTO();
-        userDTO.setEmail(user.getUsername());
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setBalance(user.getBalance());
-
-        return ResponseEntity.ok(userDTO);
-}
 
 }
