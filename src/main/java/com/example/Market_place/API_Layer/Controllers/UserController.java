@@ -113,30 +113,38 @@ public class UserController {
         // You can log or check credentials here if needed
 
         // Return a default user with ID 1
-        User defaultUser = new User();
-        defaultUser.setUsername("john@example.com");
-        defaultUser.setPassword("hidden"); // don't expose real passwords
-        defaultUser.setName("John Doe");
-        defaultUser.setPhone("0123456789");
-        defaultUser.setSellerAvatar("avatar.jpg");
-        defaultUser.setRating(4.5);
-        defaultUser.setBalance(1000.0);
+//        User defaultUser = new User();
+//        defaultUser.setUsername("john@example.com");
+//        defaultUser.setPassword("hidden"); // don't expose real passwords
+//        defaultUser.setName("John Doe");
+//        defaultUser.setPhone("0123456789");
+//        defaultUser.setSellerAvatar("avatar.jpg");
+//        defaultUser.setRating(4.5);
+//        defaultUser.setBalance(1000.0);
 
 
-        User user=userService.findById(1L).get();
+//        User user=userService.findById(1L).get();
+//
+//       UserDTO userDTO=new UserDTO();
+//       userDTO.setEmail(user.getUsername());
+//      // userDTO.setPassword(user.getPassword());
+//        userDTO.setId(user.getId());
 
-       UserDTO userDTO=new UserDTO();
-       userDTO.setEmail(user.getUsername());
-      // userDTO.setPassword(user.getPassword());
+
+//       userDTO.setName(defaultUser.getName());
+//       userDTO.setPhone(defaultUser.getPhone());
+//       userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
+//       userDTO.setRating(defaultUser.getRating());
+//       userDTO.setBalance(defaultUser.getBalance());
+
+        User user = userService.findUserByUserName(userDt);
+        if(user==null){
+            return ResponseEntity.notFound().build();
+        }
+        UserDTO userDTO=new UserDTO();
+        userDTO.setEmail(user.getUsername());
         userDTO.setId(user.getId());
-
-
-       userDTO.setName(defaultUser.getName());
-       userDTO.setPhone(defaultUser.getPhone());
-       userDTO.setSellerAvatar(defaultUser.getSellerAvatar());
-       userDTO.setRating(defaultUser.getRating());
-       userDTO.setBalance(defaultUser.getBalance());
-
+        userDTO.setName(user.getName());
 
 
         return ResponseEntity.ok(userDTO);

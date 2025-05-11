@@ -87,4 +87,17 @@ public class UserRepository {
           }
           return savedUser;
     }
+    public User findByUsername(String username)
+    {
+        User one = UserRepo1.findByUserName(username).orElse(null);
+        User two = UserRepo2.findByUserName(username).orElse(null);
+        User savedUser=null;
+        if (one != null ) {
+            savedUser=one;
+        }
+        if (two != null ) {
+            savedUser=two;
+        }
+        return savedUser;
+    }
 }

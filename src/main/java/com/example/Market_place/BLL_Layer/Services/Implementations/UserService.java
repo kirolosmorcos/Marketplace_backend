@@ -1,5 +1,6 @@
 package com.example.Market_place.BLL_Layer.Services.Implementations;
 
+import com.example.Market_place.BLL_Layer.Dto.UserDTO;
 import com.example.Market_place.DAL_Layer.Models.User;
 import com.example.Market_place.DAL_Layer.Repositories.Interfaces.UserRepository;
 import com.example.Market_place.BLL_Layer.Services.Interfaces.IUserService;
@@ -38,6 +39,17 @@ public class UserService implements IUserService {
     }
     public User updateUser(User user){
          return userRepo.UpdateUser(user);
+    }
+    public User findUserByUserName(UserDTO userDTO){
+
+        User user= userRepo.findByUsername(userDTO.getEmail());
+        if(user==null){
+            return null;
+        }
+        if(user.getPassword().equals(userDTO.getPassword())){
+            return user;
+        }
+        return null;
     }
 
 }
