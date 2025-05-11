@@ -52,4 +52,8 @@ public class UserService implements IUserService {
         return null;
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }

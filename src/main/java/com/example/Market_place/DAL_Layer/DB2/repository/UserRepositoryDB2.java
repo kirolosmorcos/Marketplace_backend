@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepositoryDB2 extends IBaseRepo<User,Long> {
+    Optional<User> findByUsername(String username);
 
     @Query("SELECT MAX(i.id) FROM User i ")
     Long findMaxId();
