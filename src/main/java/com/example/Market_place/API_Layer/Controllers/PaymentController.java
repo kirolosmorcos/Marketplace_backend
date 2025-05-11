@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
+@CrossOrigin(
+        origins = "http://localhost:8080",
+        methods = { RequestMethod.POST ,RequestMethod.GET,RequestMethod.PUT ,RequestMethod.DELETE, RequestMethod.OPTIONS },
+        allowCredentials = "true",
+        allowedHeaders="*"
+)
 public class PaymentController {
 
     @Autowired
