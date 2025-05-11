@@ -40,17 +40,17 @@ public class UserService implements IUserService {
     public User updateUser(User user){
          return userRepo.UpdateUser(user);
     }
-    public User findUserByUserName(UserDTO userDTO){
-
-        User user= userRepo.findByUsername(userDTO.getEmail());
-        if(user==null){
-            return null;
-        }
-        if(user.getPassword().equals(userDTO.getPassword())){
-            return user;
-        }
-        return null;
-    }
+//    public User findUserByUserName(UserDTO userDTO){
+//
+//        User user= userRepo.findByUsername(userDTO.getEmail());
+//        if(user==null){
+//            return null;
+//        }
+//        if(user.getPassword().equals(userDTO.getPassword())){
+//            return user;
+//        }
+//        return null;
+//    }
 
     @Override
     public Optional<User> findByUsername(String username) {

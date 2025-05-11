@@ -13,5 +13,5 @@ public interface UserRepositoryDB2 extends IBaseRepo<User,Long> {
 
     @Query("SELECT MAX(i.id) FROM User i ")
     Long findMaxId();
-    Optional<User> findByUsername(String userName);
+   // Optional<User> findByUsername(String userName);
 }
